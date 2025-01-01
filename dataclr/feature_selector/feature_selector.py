@@ -120,8 +120,8 @@ class FeatureSelector:
                 for UI display purposes. Defaults to 110.
 
         Returns:
-            list[:class:`dataclr.methods.MethodResult`]: A list of the best results
-            encapsulated as :class:`dataclr.methods.MethodResult` objects.
+            list[:class:`~dataclr.results.MethodResult`]: A list of the best results
+            encapsulated as :class:`~dataclr.results.MethodResult` objects.
         """
         if filter_methods is None:
             filter_methods = filter_classes
