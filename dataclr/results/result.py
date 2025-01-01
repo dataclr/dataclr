@@ -9,8 +9,8 @@ class MethodResult:
     Attributes:
         result (:class:`Result`): The final result of the feature selection or model
                                   evaluation.
-        methods_list (list[:class:`Method`]): A list of methods applied in the order t
-                                              hey were executed.
+        methods_list (list[:class:`~dataclr.methods.Method`]): A list of methods
+                                        applied in the order they were executed.
 
     Args:
         node: A ``GraphNode`` object containing the result and its associated methods.
