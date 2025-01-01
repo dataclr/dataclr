@@ -1,0 +1,66 @@
+[build-system]
+requires = ["setuptools >= 62.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dataclr"
+version = "0.1.0"
+description = "A Python library for feature selection in tabular datasets"
+readme = "README.md"
+authors = [
+    { name = "Lukasz Machutt", email = "lukasz.machutt@gmail.com" },
+    { name = "Jakub Nurkiewicz", email= "jakub.nurkiewicz.2003@gmail.com" }
+]
+keywords = ["feature selection", "data science", "machine learning", "tabular data"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering :: Information Analysis"
+]
+dependencies = [
+    "scikit-learn>=1.6.0",
+    "numpy>=2.0.2",
+    "pandas>=2.2.3",
+    "tqdm>=4.67.1",
+    "optuna>=4.1.0",
+    "dcor>=0.6",
+    "statsmodels>=0.14.4",
+    "shap>=0.46.0",
+    "hyperopt>=0.2.7",
+    "Boruta>=0.4.3"
+]
+requires-python = ">=3.9"
+
+[project.optional-dependencies]
+dev = [
+    "black==24.8.0",
+    "flake8==7.1.0",
+    "isort==5.13.2",
+    "pre-commit>=4.0.1"
+]
+docs = [
+    "sphinx>=5.0.0",
+    "sphinxawesome-theme>=2.0.0"
+]
+
+[tool.black]
+line-length = 88
+target-version = ["py38", "py39", "py310"]
+exclude = "docs|scripts"
+
+[tool.flake8]
+max-line-length = 99
+exclude = ["docs", "scripts"]
+ignore = ["E203", "W503"]
+statistics = true
+
+[tool.isort]
+profile = "black"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["dataclr", "methods", "feature_selector"]
