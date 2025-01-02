@@ -1,3 +1,3 @@
-from ._typing import BaseModel
+from .feature_selector import FeatureSelector
 
-__all__ = ["BaseModel"]
+__all__ = [FeatureSelector]

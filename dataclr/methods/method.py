@@ -3,8 +3,9 @@ from __future__ import annotations
 import optuna
 import pandas as pd
 
-from dataclr._typing import BaseModel, DataSplits
+from dataclr._typing import DataSplits
 from dataclr.metrics import Metric
+from dataclr.models import BaseModel
 from dataclr.results import Result, ResultPerformance
 
 optuna.logging.set_verbosity(optuna.logging.WARNING)
@@ -19,15 +20,18 @@ class Method:
     for fitting a model and returning results.
 
     Attributes:
-        model (:class:`~dataclr.BaseModel`): The machine learning model used for
+        model (:class:`~dataclr.models.BaseModel`): The machine learning model used for
                                              feature evaluation.
-        metric (:data:`~dataclr.Metric`): The metric used to assess feature importance.
+        metric (:data:`~dataclr.metrics.Metric`): The metric used to assess feature
+                                                importance.
         n_results (int): The number of top features or results to select.
         total_combinations (int): The total number of feature combinations evaluated.
         seed (int) : Number determining the randomness.
     """
 
-    def __init__(self, model, metric: Metric, n_results: int, seed: int = 42) -> None:
+    def __init__(
+        self, model: BaseModel, metric: Metric, n_results: int, seed: int = 42
+    ) -> None:
         self.model: BaseModel = model
         self.metric: Metric = metric
         self.n_results: int = n_results
