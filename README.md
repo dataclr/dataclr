@@ -131,7 +131,12 @@ print(results)
 
 ## Benchmarks
 
-Here are benchmarks
+As our algorithm produces multiple results, we selected benchmark results that balance feature count with performance, while being capable of achieving the best performance if needed.
+
+![benchmark_bank](https://i.imgur.com/qiG1L9j.png)
+![benchmark_students](https://i.imgur.com/FpY3N9h.png)
+![benchmark_fifa](https://i.imgur.com/BDTkYgL.png)
+![benchmark_uber](https://i.imgur.com/X3uYyCX.png)
 
 ## Documentation
 

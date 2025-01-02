@@ -7,4 +7,5 @@ API Reference
     feature_selector
     methods
     metrics
+    models
     results
