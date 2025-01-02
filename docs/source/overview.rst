@@ -1,13 +1,9 @@
 Overview
 ========
 
-**dataclr** is a Python library designed to simplify feature selection for machine 
-learning engineers and data scientists working with tabular datasets. It provides 
-a comprehensive set of tools that implement a wide range of **filter methods** and, 
-**wrapper methods** for feature selection. By combining 
-multiple feature evaluation strategies, ``dataclr`` ensures robust, accurate, and 
-interpretable feature rankings, improving model performance and simplifying the 
-feature engineering process.
+``dataclr`` is a Python library for streamlined feature selection in tabular datasets. 
+It offers a variety of filter and wrapper methods, delivering robust and interpretable 
+feature rankings to enhance model performance and simplify feature engineering.
 
 Key Features
 ------------
@@ -17,6 +13,7 @@ Key Features
    - **Filter Methods**:
      - Evaluate features independently of the predictive model.
      - Include techniques such as ``MutualInformation``, ``VarianceThreshold``, ``ANOVA``, ``KendallCorrelation``, and more.
+     
    - **Wrapper Methods**:
      - Evaluate subsets of features using a predictive model.
      - Include methods such as ``BorutaMethod``, ``ShapMethod``, ``HyperoptMethod``, and ``OptunaMethod``.

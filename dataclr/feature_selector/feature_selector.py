@@ -9,12 +9,12 @@ from threadpoolctl import threadpool_limits
 
 from dataclr._console_ui import console_ui
 from dataclr._evaluate import train_eval
-from dataclr._typing import BaseModel
 from dataclr.feature_selector._graph import Graph
 from dataclr.methods import FilterMethod, WrapperMethod
 from dataclr.methods._method_list import filter_classes, wrapper_classes
 from dataclr.methods.method import DataSplits
 from dataclr.metrics import Metric, is_regression
+from dataclr.models import BaseModel
 from dataclr.results import MethodResult
 
 
@@ -28,7 +28,7 @@ class FeatureSelector:
     the given metric.
 
     Args:
-        model (:class:`~dataclr.BaseModel`): The model to be used for evaluation.
+        model (:class:`~dataclr.models.BaseModel`): The model to be used for evaluation.
         metric (:data:`~dataclr.metrics.Metric`): The metric used to assess model
             performance.
         X_train (pd.DataFrame): Training feature data.
@@ -39,7 +39,7 @@ class FeatureSelector:
 
     def __init__(
         self,
-        model,
+        model: BaseModel,
         metric: Metric,
         X_train: pd.DataFrame,
         X_test: pd.DataFrame,

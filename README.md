@@ -1,6 +1,18 @@
 # dataclr
 
-**dataclr** is a Python library for feature selection, designed to help machine learning engineers and data scientists quickly identify the best features from tabular datasets. By combining a wide range of filter, wrapper, and embedded methods, `dataclr` provides a robust and versatile approach to improve model performance and streamline feature engineering.
+[![PyPI version](https://img.shields.io/pypi/v/dataclr?label=PyPI&color=blue)](https://pypi.org/project/dataclr/)
+[![Python Versions](https://img.shields.io/badge/python-3.9%20|%203.10%20|%203.11%20|%203.12-blue)](https://www.python.org/)
+[![License](https://img.shields.io/github/license/dataclr/dataclr?color=blue)](https://github.com/dataclr/dataclr/blob/main/LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/dataclr/dataclr?label=Stars&color=yellow)](https://github.com/dataclr/dataclr/stargazers)
+
+<div align="center">
+  <a href="https://www.dataclr.com/">Docs</a>
+  <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
+  <a href="https://www.dataclr.com/">Website</a>
+  <hr />
+</div>
+
+_dataclr_ is a Python library for feature selection, enabling data scientists and ML engineers to identify optimal features from tabular datasets. By combining filter and wrapper methods, it achieves _state-of-the-art_ results, enhancing model performance and simplifying feature engineering.
 
 ## Features
 
@@ -47,10 +59,10 @@
 - **Interpretable Results**:
 
   - Provides ranked feature lists with detailed importance scores.
-  - Supports visualization and reporting.
+  - Shows used methods along with their parameters.
 
 - **Seamless Integration**:
-  - Works with popular Python libraries like `pandas`, `scikit-learn`, and `statsmodels`.
+  - Works with popular Python libraries like `pandas` and `scikit-learn`.
 
 ## Installation
 
@@ -117,6 +129,11 @@ results = method.fit_transform(X_train, X_test, y_train, y_test)
 print(results)
 ```
 
+## Benchmarks
+
+Here are benchmarks
+
 ## Documentation
 
-Explore the full documentation for detailed usage instructions, API references, and examples.
+Explore the <a href="https://www.dataclr.com">full documentation</a> for detailed usage
+instructions, API references, and examples.

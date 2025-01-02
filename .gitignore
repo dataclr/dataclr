@@ -4,3 +4,6 @@ dataclr.egg-info
 build
 dist
 logs
+
+datasets
+scripts

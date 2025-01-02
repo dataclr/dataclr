@@ -7,8 +7,9 @@ from sklearn.metrics import (
     root_mean_squared_error,
 )
 
-from dataclr._typing import BaseModel, DataSplits
+from dataclr._typing import DataSplits
 from dataclr.metrics import Metric, is_regression
+from dataclr.models import BaseModel
 from dataclr.results import ResultPerformance
 from dataclr.results.performance import ClassificationPerformance, RegressionPerformance
 
