@@ -1,0 +1,29 @@
+name: Publish distributions to PyPI
+
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  build-n-publish:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.12
+
+      - name: Install build tools
+        run: |
+          python -m pip install -U pip build
+
+      - name: Build distributions
+        run: python -m build
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
