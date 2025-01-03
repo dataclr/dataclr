@@ -13,7 +13,7 @@ from dataclr.feature_selector._graph import Graph
 from dataclr.methods import FilterMethod, WrapperMethod
 from dataclr.methods._method_list import filter_classes, wrapper_classes
 from dataclr.methods.method import DataSplits
-from dataclr.metrics import Metric, is_regression
+from dataclr.metrics import Metric
 from dataclr.models import BaseModel
 from dataclr.results import MethodResult
 
@@ -25,16 +25,30 @@ class FeatureSelector:
 
     The ``FeatureSelector`` evaluates the base performance of a model, applies various
     feature selection techniques, and determines the optimal set of features based on
-    the given metric.
+    the given metric. It also ensures that the data is properly preprocessed, encoded,
+    and scaled for optimal performance.
 
     Args:
         model (:class:`~dataclr.models.BaseModel`): The model to be used for evaluation.
         metric (:data:`~dataclr.metrics.Metric`): The metric used to assess model
             performance.
-        X_train (pd.DataFrame): Training feature data.
-        X_test (pd.DataFrame): Testing feature data.
+        X_train (pd.DataFrame): Training feature data. Must be numeric and either
+            normalized or standardized.
+        X_test (pd.DataFrame): Testing feature data. Must be numeric and either
+            normalized or standardized.
         y_train (pd.Series): Training target data.
         y_test (pd.Series): Testing target data.
+
+    Raises:
+        ValueError: If `X_train` contains non-numeric data.
+        ValueError: If `X_train` is not normalized or standardized.
+        ValueError: If `X_train` or `X_test` contains incompatible features
+            that cannot be aligned.
+
+    Notes:
+        - Features with only a single unique value are removed.
+        - It is necessary to preprocess the data (e.g., encoding, scaling) prior to
+        passing it to this class for feature selection.
     """
 
     def __init__(
@@ -49,11 +63,32 @@ class FeatureSelector:
         self.model: BaseModel = model
         self.metric: Metric = metric
 
-        if not is_regression(metric):
-            X_train = X_train.loc[:, X_train.nunique() > 1]
-            X_test = X_test.loc[:, X_test.nunique() > 1]
+        if not all(np.issubdtype(dtype, np.number) for dtype in X_train.dtypes):
+            raise ValueError(
+                "X_train contains non-numeric data. Ensure all data is properly encoded"
+            )
 
-            X_train, X_test = X_train.align(X_test, join="inner", axis=1)
+        def is_normalized_or_standardized(df: pd.DataFrame):
+            for col in df.columns:
+                col_values = df[col].values
+                if not (
+                    np.all(col_values >= 0)
+                    and np.all(col_values <= 1)
+                    or np.isclose(col_values.mean(), 0)
+                    and np.isclose(col_values.std(), 1)
+                ):
+                    return False
+            return True
+
+        if not is_normalized_or_standardized(X_train):
+            raise ValueError(
+                "X_train is not normalized or standardized. Ensure the data is "
+                "preprocessed appropriately."
+            )
+
+        X_train = X_train.loc[:, X_train.nunique() > 1]
+        X_test = X_test.loc[:, X_test.nunique() > 1]
+        X_train, X_test = X_train.align(X_test, join="inner", axis=1)
 
         self.data_splits: DataSplits = {
             "X_train": X_train,
