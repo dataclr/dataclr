@@ -31,6 +31,32 @@ You can use libraries like ``pandas`` or ``scikit-learn`` to preprocess your dat
     scaler = StandardScaler()
     X_normalized = pd.DataFrame(scaler.fit_transform(X_encoded), columns=X_encoded.columns)
 
+Model Requirements
+-------------------
+
+To work with **dataclr**, your machine learning model must implement the following:
+
+- **fit**: A method to train the model on a dataset. It should have the signature ``fit(X, y)``.
+- **predict**: A method to generate predictions on new data. It should have the signature ``predict(X)``.
+
+Additionally, for most wrapper methods, the model must provide feature importance or coefficients via:
+
+- **feature_importances_**: An attribute containing feature importances (e.g., for tree-based models like ``RandomForestClassifier``).
+- **coef_**: An attribute containing feature coefficients (e.g., for linear models like ``LogisticRegression``).
+
+These attributes are necessary for evaluating the relative importance of features during the feature selection process.
+
+.. important::
+    **Performance Tip:**
+    To maximize performance, since **dataclr** algorithms are parallelized and distributed, it is recommended to run your model with a single thread. This avoids interference between parallel processes from the feature selection algorithm and the model.
+
+    - Use ``n_jobs=1`` for models that support multithreading, such as ``RandomForestClassifier`` or ``RandomForestRegressor``.
+    - Choose non-parallelized solvers for models where applicable, such as ``solver='liblinear'`` for ``LogisticRegression`` in scikit-learn.
+
+.. note::
+
+    For further details on model implementation, see :class:`dataclr.models.BaseModel`.
+
 Using FeatureSelector
 ---------------------
 
@@ -61,10 +87,15 @@ The ``FeatureSelector`` class provides a high-level API for selecting the best f
        print(selected_features)
 
 Example Workflow:
+-----------------
 
 .. code-block:: python
 
+    from sklearn.linear_model import LogisticRegression
     from dataclr.feature_selection import FeatureSelector
+
+    # Define a Logistic Regression model
+    my_model = LogisticRegression(solver="liblinear")
 
     # Initialize the FeatureSelector
     selector = FeatureSelector(
@@ -103,10 +134,15 @@ If you want more granular control over the feature selection process, you can us
        print(method.ranked_features_)
 
 Example Workflow:
+-----------------
 
 .. code-block:: python
 
+    from sklearn.ensemble import RandomForestRegressor
     from dataclr.methods import VarianceThreshold
+
+    # Define a Random Forest Regressor model
+    my_model = RandomForestRegressor(n_estimators=100, random_state=42)
 
     # Initialize the method
     method = VarianceThreshold(model=my_model, metric="rmse")
@@ -117,3 +153,4 @@ Example Workflow:
     # Print the results
     for result in results:
         print(f"Feature Set: {result.feature_set}, Score: {result.score}")
+
