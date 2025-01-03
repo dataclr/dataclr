@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from abc import ABC, abstractmethod
+
 import optuna
 import pandas as pd
 
@@ -11,7 +13,7 @@ from dataclr.results import Result, ResultPerformance
 optuna.logging.set_verbosity(optuna.logging.WARNING)
 
 
-class Method:
+class Method(ABC):
     """
     A base class for feature selection methods.
 
@@ -69,6 +71,7 @@ class Method:
 
         return self.transform(X_train, X_test, y_train, y_test)
 
+    @abstractmethod
     def fit(self, X_train: pd.DataFrame, y_train: pd.Series) -> Method:
         """
         Fits the model using the provided training data.
@@ -86,8 +89,9 @@ class Method:
         Raises:
             NotImplementedError: If the method is not implemented in a subclass.
         """
-        raise NotImplementedError("Invoke this function from a subclass!")
+        pass
 
+    @abstractmethod
     def transform(
         self,
         X_train: pd.DataFrame,
@@ -113,11 +117,12 @@ class Method:
         Raises:
             NotImplementedError: If the method is not implemented in a subclass.
         """
-        raise NotImplementedError("Invoke this function from a subclass!")
+        pass
 
+    @abstractmethod
     def _get_results(
         self,
         data_splits: DataSplits,
         cached_performance: dict[str, ResultPerformance],
     ) -> list[Result]:
-        raise NotImplementedError()
+        pass
