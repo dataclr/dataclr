@@ -1,9 +1,10 @@
 from __future__ import annotations
 
 import pandas as pd
+from sklearn.feature_selection import f_classif, f_regression
+
 from dataclr.methods.filter_method import FilterMethod
 from dataclr.metrics import is_regression
-from sklearn.feature_selection import f_classif, f_regression
 
 
 class mRMR(FilterMethod):

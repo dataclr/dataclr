@@ -5,7 +5,6 @@ import random
 
 import numpy as np
 import pandas as pd
-from threadpoolctl import threadpool_limits
 
 from dataclr._console_ui import console_ui
 from dataclr._evaluate import train_eval
@@ -128,47 +127,46 @@ class FeatureSelector:
         if wrapper_methods is None:
             wrapper_methods = wrapper_classes
 
-        with threadpool_limits(limits=1, user_api="blas"):
-            np.random.seed(seed)
-            random.seed(seed)
+        np.random.seed(seed)
+        random.seed(seed)
 
-            console_ui.reset_ui()
-            console_ui.max_line_length = max_console_width
-            performance = train_eval(self.model, self.metric, self.data_splits)
+        console_ui.reset_ui()
+        console_ui.max_line_length = max_console_width
+        performance = train_eval(self.model, self.metric, self.data_splits)
 
-            if n_jobs == -1:
-                n_jobs = multiprocessing.cpu_count()
+        if n_jobs == -1:
+            n_jobs = multiprocessing.cpu_count()
 
-            print("Base performance:", performance)
+        print("Base performance:", performance)
 
-            graph = Graph(
-                data_splits=self.data_splits,
-                metric=self.metric,
-                method_set={
-                    filter_class(
-                        self.model,
-                        self.metric,
-                        n_results=max_method_results,
-                        seed=seed,
-                    )
-                    for filter_class in filter_methods
-                },
-                wrapper_method_set={
-                    wrapper_class(
-                        self.model,
-                        self.metric,
-                        n_results=max_method_results,
-                        seed=seed,
-                    )
-                    for wrapper_class in wrapper_methods
-                },
-                n_wrapper_results=final_wrapper_results,
-                n_jobs=n_jobs,
-                level_wrapper_results=level_wrapper_results,
-                verbose=verbose,
-                max_depth=max_depth,
-                start_wrappers=start_wrappers,
-                level_cutoff_threshold=level_cutoff_threshold,
-            )
+        graph = Graph(
+            data_splits=self.data_splits,
+            metric=self.metric,
+            method_set={
+                filter_class(
+                    self.model,
+                    self.metric,
+                    n_results=max_method_results,
+                    seed=seed,
+                )
+                for filter_class in filter_methods
+            },
+            wrapper_method_set={
+                wrapper_class(
+                    self.model,
+                    self.metric,
+                    n_results=max_method_results,
+                    seed=seed,
+                )
+                for wrapper_class in wrapper_methods
+            },
+            n_wrapper_results=final_wrapper_results,
+            n_jobs=n_jobs,
+            level_wrapper_results=level_wrapper_results,
+            verbose=verbose,
+            max_depth=max_depth,
+            start_wrappers=start_wrappers,
+            level_cutoff_threshold=level_cutoff_threshold,
+        )
 
-            return [MethodResult(node) for node in graph._get_best_results(n_results)]
+        return [MethodResult(node) for node in graph._get_best_results(n_results)]
