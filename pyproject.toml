@@ -64,7 +64,7 @@ profile = "black"
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["dataclr", "methods", "feature_selector"]
+include = ["dataclr", "methods", "feature_selector", "metrics", "models", "results"]
 
 [project.urls]
 Homepage = "https://github.com/dataclr/dataclr"

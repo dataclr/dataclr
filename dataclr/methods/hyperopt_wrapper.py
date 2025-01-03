@@ -4,12 +4,13 @@ import copy
 
 import numpy as np
 import pandas as pd
+from hyperopt import Trials, fmin, hp, tpe
+
 from dataclr._evaluate import train_eval
 from dataclr.methods.method import DataSplits
 from dataclr.methods.wrapper_method import WrapperMethod
 from dataclr.metrics import Metric, is_maximizing_metric
 from dataclr.results import Result, ResultPerformance
-from hyperopt import Trials, fmin, hp, tpe
 
 
 class HyperoptMethod(WrapperMethod):

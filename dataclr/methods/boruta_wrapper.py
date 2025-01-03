@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import pandas as pd
 from boruta import BorutaPy
+
 from dataclr.methods.filter_method import FilterMethod
 from dataclr.methods.method import DataSplits
 from dataclr.methods.wrapper_method import WrapperMethod
