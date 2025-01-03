@@ -338,10 +338,11 @@ class Graph:
         self._search_feature_sets()
         duration = time.perf_counter() - start_time
 
-        if self.best_results_history:
-            best_performance = self.best_results_history[-1]
-            print(f"\nBest found performance: {best_performance} in {duration}")
-        else:
-            print(f"No results found in {duration}")
+        if self.verbose:
+            if self.best_results_history:
+                best_performance = self.best_results_history[-1]
+                print(f"\nBest found performance: {best_performance} in {duration}")
+            else:
+                print(f"No results found in {duration}")
 
         return self.best_results

@@ -175,7 +175,8 @@ class FeatureSelector:
             if n_jobs == -1:
                 n_jobs = multiprocessing.cpu_count()
 
-            print("Base performance:", performance)
+            if verbose:
+                print("Base performance:", performance)
 
             graph = Graph(
                 data_splits=self.data_splits,
