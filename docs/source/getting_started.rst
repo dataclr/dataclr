@@ -31,6 +31,19 @@ You can use libraries like ``pandas`` or ``scikit-learn`` to preprocess your dat
     scaler = StandardScaler()
     X_normalized = pd.DataFrame(scaler.fit_transform(X_encoded), columns=X_encoded.columns)
 
+.. note::
+
+    **Working with Large Datasets**:
+    For very large datasets, it may be advisable to sample the data to speed up feature selection. Ensure the sample is representative of the original dataset to maintain meaningful results. You can use random sampling with libraries like ``pandas``:
+
+    .. code-block:: python
+
+        # Example of random sampling
+        sample_fraction = 0.1  # Use 10% of the data
+        sampled_data = data.sample(frac=sample_fraction, random_state=42)
+        X_sampled = sampled_data.drop(columns=["target"])
+        y_sampled = sampled_data["target"]
+
 Model Requirements
 -------------------
 
