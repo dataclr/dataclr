@@ -63,8 +63,8 @@ statistics = true
 profile = "black"
 
 [tool.setuptools.packages.find]
-where = ["."]
-include = ["dataclr", "methods", "feature_selector", "metrics", "models", "results"]
+where = ["dataclr"]
+include = ["dataclr.*"]
 
 [project.urls]
 Homepage = "https://github.com/dataclr/dataclr"
