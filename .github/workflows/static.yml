@@ -1,11 +1,12 @@
-# Simple workflow for building Sphinx documentation and deploying to GitHub Pages
-name: Build and Deploy Sphinx Docs
+# Simple workflow for deploying Sphinx documentation to GitHub Pages
+name: Deploy Sphinx Docs to Pages
 
 on:
+  # Runs on pushes targeting the default branch
   push:
-    branches:
-      - "main"
-  pull_request:
+    branches: ["main"]
+
+  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 permissions:
@@ -18,7 +19,10 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -39,24 +43,9 @@ jobs:
         run: |
           make html
 
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v3
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          name: github-pages
-          path: docs/build/html
-
-  deploy:
-    if: github.ref_name == 'main' && github.event_name == 'push'
-    needs: build
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download build artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: github-pages
           path: docs/build/html
 
       - name: Deploy to GitHub Pages
