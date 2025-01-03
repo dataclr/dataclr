@@ -320,7 +320,7 @@ class Graph:
                                 future_tasks.extend(new_tasks)
                                 if self.verbose:
                                     console_ui._increment_total_combinations(
-                                        len(new_tasks)
+                                        len(new_tasks) + len(new_future_tasks)
                                     )
                         except Exception as e:
                             print(e)
