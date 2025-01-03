@@ -112,19 +112,19 @@ class Graph:
         node: GraphNode,
         depth: int,
     ):
-        with threadpool_limits(limits=1, user_api="blas"):
-            if (
-                self.shared_stats["result_with_no_improvement"]
-                > self.level_cutoff_threshold
-            ):
-                if self.shared_stats["depth_to_remove"] == -1:
-                    self.shared_stats["depth_to_remove"] = depth
-                elif self.shared_stats["depth_to_remove"] == depth:
-                    return [], None, None
-                else:
-                    self.shared_stats["result_with_no_improvement"] = 0
-                    self.shared_stats["depth_to_remove"] = -1
+        if (
+            self.shared_stats["result_with_no_improvement"]
+            > self.level_cutoff_threshold
+        ):
+            if self.shared_stats["depth_to_remove"] == -1:
+                self.shared_stats["depth_to_remove"] = depth
+            elif self.shared_stats["depth_to_remove"] == depth:
+                return [], None, None
+            else:
+                self.shared_stats["result_with_no_improvement"] = 0
+                self.shared_stats["depth_to_remove"] = -1
 
+        with threadpool_limits(limits=1, user_api="blas"):
             if self.verbose:
                 self.cur_methods.append(method.__class__.__name__)
 
