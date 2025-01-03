@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "dataclr"
-version = "0.1.2"
+version = "0.1.3"
 description = "A Python library for feature selection in tabular datasets"
 readme = "README.md"
 authors = [
@@ -63,8 +63,7 @@ statistics = true
 profile = "black"
 
 [tool.setuptools.packages.find]
-where = ["dataclr"]
-include = ["dataclr.*"]
+include = ["dataclr*"]
 
 [project.urls]
 Homepage = "https://github.com/dataclr/dataclr"
