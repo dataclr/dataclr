@@ -5,13 +5,14 @@ from functools import partial
 
 import optuna
 import pandas as pd
+from optuna.samplers import TPESampler
+
 from dataclr._evaluate import train_eval
 from dataclr.methods.method import DataSplits
 from dataclr.methods.wrapper_method import WrapperMethod
 from dataclr.metrics import Metric, is_maximizing_metric, is_regression
 from dataclr.metrics.metrics import CLASSIFICATION_METRICS, REGRESSION_METRICS
 from dataclr.results import Result, ResultPerformance
-from optuna.samplers import TPESampler
 
 optuna.logging.set_verbosity(optuna.logging.WARNING)
 

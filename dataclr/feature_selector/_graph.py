@@ -5,6 +5,8 @@ import multiprocessing
 import time
 from concurrent.futures import ProcessPoolExecutor
 
+from threadpoolctl import threadpool_limits
+
 from dataclr._console_ui import console_ui
 from dataclr._typing import DataSplits
 from dataclr.feature_selector._graph_node import GraphNode
@@ -122,41 +124,43 @@ class Graph:
                 self.shared_stats["result_with_no_improvement"] = 0
                 self.shared_stats["depth_to_remove"] = -1
 
-        self.cur_methods.append(method.__class__.__name__)
+        with threadpool_limits(limits=1, user_api="blas"):
+            if self.verbose:
+                self.cur_methods.append(method.__class__.__name__)
 
-        new_method_set = future_methods - {method}
-        new_node = GraphNode(node.feature_list, new_method_set, method)
+            new_method_set = future_methods - {method}
+            new_node = GraphNode(node.feature_list, new_method_set, method)
 
-        new_results = new_node.get_results(
-            self.data_splits,
-            self.cached_results,
-            self.cached_performance,
-            method,
-        )
-
-        future_params = []
-
-        for result in new_results:
-            new_result_node = GraphNode(
-                feature_list=result.feature_list,
-                future_methods=new_method_set,
-                method=method,
-                result=result,
-                parent=node,
+            new_results = new_node.get_results(
+                self.data_splits,
+                self.cached_results,
+                self.cached_performance,
+                method,
             )
 
-            self.__update_best_results(new_result_node)
+            future_params = []
 
-            if self.__is_combination_processed(new_method_set, result.feature_list):
-                continue
+            for result in new_results:
+                new_result_node = GraphNode(
+                    feature_list=result.feature_list,
+                    future_methods=new_method_set,
+                    method=method,
+                    result=result,
+                    parent=node,
+                )
 
-            for future_method in new_method_set:
-                if self.max_depth < 0 or depth < self.max_depth:
-                    future_params.append(
-                        [future_method, new_method_set, new_result_node, depth + 1]
-                    )
+                self.__update_best_results(new_result_node)
 
-        return future_params, new_results[0] if new_results else None, method
+                if self.__is_combination_processed(new_method_set, result.feature_list):
+                    continue
+
+                for future_method in new_method_set:
+                    if self.max_depth < 0 or depth < self.max_depth:
+                        future_params.append(
+                            [future_method, new_method_set, new_result_node, depth + 1]
+                        )
+
+            return future_params, new_results[0] if new_results else None, method
 
     def _result_key(self, node: GraphNode) -> float:
         if node.result is None:
@@ -268,7 +272,7 @@ class Graph:
                 future_tasks.remove(future)
                 if self.verbose:
                     console_ui._send_result(result, list(self.cur_methods))
-                self.cur_methods.remove(method.__class__.__name__)
+                    self.cur_methods.remove(method.__class__.__name__)
 
     def _search_feature_sets(self) -> None:
         cur_max_depth = 1
@@ -301,8 +305,8 @@ class Graph:
                             future_tasks.remove(future)
                             if self.verbose:
                                 console_ui._send_result(result, list(self.cur_methods))
-                            if method:
-                                self.cur_methods.remove(method.__class__.__name__)
+                                if method:
+                                    self.cur_methods.remove(method.__class__.__name__)
 
                             if results:
                                 (

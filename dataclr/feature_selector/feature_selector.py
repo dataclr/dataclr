@@ -123,12 +123,13 @@ class FeatureSelector:
             list[:class:`~dataclr.results.MethodResult`]: A list of the best results
             encapsulated as :class:`~dataclr.results.MethodResult` objects.
         """
-        if filter_methods is None:
-            filter_methods = filter_classes
-        if wrapper_methods is None:
-            wrapper_methods = wrapper_classes
 
         with threadpool_limits(limits=1, user_api="blas"):
+            if filter_methods is None:
+                filter_methods = filter_classes
+            if wrapper_methods is None:
+                wrapper_methods = wrapper_classes
+
             np.random.seed(seed)
             random.seed(seed)
 
