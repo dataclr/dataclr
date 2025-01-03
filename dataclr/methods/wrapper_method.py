@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+from abc import ABC
+
 from dataclr.methods.method import Method
 from dataclr.metrics import Metric
 
 
-class WrapperMethod(Method):
+class WrapperMethod(Method, ABC):
     """
     A base class for wrapper feature selection methods.
 

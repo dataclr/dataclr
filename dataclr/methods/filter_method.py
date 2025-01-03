@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import copy
+from abc import ABC
 from functools import partial
 
 import optuna
@@ -18,7 +19,7 @@ from dataclr.results import Result, ResultPerformance
 optuna.logging.set_verbosity(optuna.logging.WARNING)
 
 
-class FilterMethod(Method):
+class FilterMethod(Method, ABC):
     """
     A base class for filter feature selection methods.
 
