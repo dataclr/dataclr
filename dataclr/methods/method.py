@@ -71,7 +71,6 @@ class Method(ABC):
 
         return self.transform(X_train, X_test, y_train, y_test)
 
-    @abstractmethod
     def fit(self, X_train: pd.DataFrame, y_train: pd.Series) -> Method:
         """
         Fits the model using the provided training data.
