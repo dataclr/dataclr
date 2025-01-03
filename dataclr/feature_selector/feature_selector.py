@@ -68,24 +68,6 @@ class FeatureSelector:
                 "X_train contains non-numeric data. Ensure all data is properly encoded"
             )
 
-        def is_normalized_or_standardized(df: pd.DataFrame):
-            for col in df.columns:
-                col_values = df[col].values
-                if not (
-                    np.all(col_values >= 0)
-                    and np.all(col_values <= 1)
-                    or np.isclose(col_values.mean(), 0)
-                    and np.isclose(col_values.std(), 1)
-                ):
-                    return False
-            return True
-
-        if not is_normalized_or_standardized(X_train):
-            raise ValueError(
-                "X_train is not normalized or standardized. Ensure the data is "
-                "preprocessed appropriately."
-            )
-
         X_train = X_train.loc[:, X_train.nunique() > 1]
         X_test = X_test.loc[:, X_test.nunique() > 1]
         X_train, X_test = X_train.align(X_test, join="inner", axis=1)
