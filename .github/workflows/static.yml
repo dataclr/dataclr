@@ -2,15 +2,10 @@
 name: Build and Deploy Sphinx Docs
 
 on:
-  # Runs on pushes to the main branch
   push:
     branches:
       - "main"
-
-  # Runs on pull requests
   pull_request:
-
-  # Allows manual trigger
   workflow_dispatch:
 
 permissions:
@@ -47,7 +42,7 @@ jobs:
       - name: Upload build artifact
         uses: actions/upload-artifact@v3
         with:
-          name: sphinx-docs
+          name: github-pages
           path: docs/build/html
 
   deploy:
@@ -61,7 +56,7 @@ jobs:
       - name: Download build artifact
         uses: actions/download-artifact@v3
         with:
-          name: sphinx-docs
+          name: github-pages
           path: docs/build/html
 
       - name: Deploy to GitHub Pages
