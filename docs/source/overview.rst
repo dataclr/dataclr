@@ -59,4 +59,4 @@ How It Works
 
 3. **Returning Ranked Features Sets**: Output a ranked list of features sets along with used methods and additional metrics.
 
-With a focus on flexibility, robustness, and user-friendliness, ``dataclr`` empowers machine learning practitioners to make informed decisions about feature selection quickly and effectively.
+``dataclr`` enables machine learning practitioners to perform feature selection efficiently and with ease.
