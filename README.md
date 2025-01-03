@@ -1,4 +1,4 @@
-# dataclr
+# dataclr: The feature selection library
 
 [![PyPI version](https://img.shields.io/pypi/v/dataclr?label=PyPI&color=blue)](https://pypi.org/project/dataclr/)
 [![Python Versions](https://img.shields.io/badge/python-3.9%20|%203.10%20|%203.11%20|%203.12-blue)](https://www.python.org/)
@@ -97,11 +97,15 @@ X_normalized = pd.DataFrame(scaler.fit_transform(X_encoded), columns=X_encoded.c
 The `FeatureSelector` is a high-level API that combines multiple methods to select the best feature subsets:
 
 ```bash
+from sklearn.ensemble import RandomForestClassifier
 from dataclr.feature_selection import FeatureSelector
+
+# Define a scikit-learn model
+my_model = RandomForestClassifier(n_estimators=100, random_state=42)
 
 # Initialize the FeatureSelector
 selector = FeatureSelector(
-    model=my_model,  # Replace with your model
+    model=my_model,
     metric="accuracy",
     X_train=X_train,
     X_test=X_test,
@@ -119,7 +123,11 @@ print(selected_features)
 For granular control, you can use individual feature selection methods:
 
 ```bash
+from sklearn.linear_model import LogisticRegression
 from dataclr.methods import MutualInformation
+
+# Define a scikit-learn model
+my_model = LogisticRegression(solver="liblinear", max_iter=1000)
 
 # Initialize a method
 method = MutualInformation(model=my_model, metric="accuracy")
