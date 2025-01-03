@@ -3,11 +3,9 @@ from __future__ import annotations
 import multiprocessing
 import random
 
-
-from threadpoolctl import threadpool_limits
-
 import numpy as np
 import pandas as pd
+from threadpoolctl import threadpool_limits
 
 from dataclr._console_ui import console_ui
 from dataclr._evaluate import train_eval
@@ -125,7 +123,7 @@ class FeatureSelector:
             list[:class:`~dataclr.results.MethodResult`]: A list of the best results
             encapsulated as :class:`~dataclr.results.MethodResult` objects.
         """
-        
+
         with threadpool_limits(limits=1, user_api="blas"):
             if filter_methods is None:
                 filter_methods = filter_classes
