@@ -127,7 +127,8 @@ class FilterMethod(Method, ABC):
         return best_params
 
     def _get_results(
-        self, data_splits: DataSplits, cached_performance: dict[int, ResultPerformance]
+        self, data_splits: DataSplits, cached_performance: dict[int, ResultPerformance],
+        keep_features: list[str] = [],
     ) -> list[Result]:
         try:
             self.fit(data_splits["X_train"], data_splits["y_train"])

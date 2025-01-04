@@ -93,6 +93,7 @@ class HyperoptMethod(WrapperMethod):
         self,
         data_splits: DataSplits,
         cached_performance: dict[int, ResultPerformance],
+        keep_features: list[str] = [],
     ) -> list[Result]:
         if self.n_trials is None:
             self.n_trials = len(data_splits["X_train"].columns) * 10

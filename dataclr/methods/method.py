@@ -123,5 +123,6 @@ class Method(ABC):
         self,
         data_splits: DataSplits,
         cached_performance: dict[str, ResultPerformance],
+        keep_features: list[str] = [],
     ) -> list[Result]:
         pass
