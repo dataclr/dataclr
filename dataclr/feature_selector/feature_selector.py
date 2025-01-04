@@ -94,6 +94,7 @@ class FeatureSelector:
         n_jobs: int = -1,
         seed: int = None,
         max_console_width: int = 110,
+        keep_features: list[str] = [],
     ) -> list[MethodResult]:
         """
         Selects the best features using filter and wrapper methods and evaluates
@@ -135,6 +136,7 @@ class FeatureSelector:
                 utilize all available processors. Defaults to -1.
             max_console_width (int): The maximum width of the console output
                 for UI display purposes. Defaults to 110.
+            keep_features (list[str])): List of features to be keept. Defaults to empty.
 
         Returns:
             list[:class:`~dataclr.results.MethodResult`]: A list of the best results
@@ -188,6 +190,7 @@ class FeatureSelector:
                 max_depth=max_depth,
                 start_wrappers=start_wrappers,
                 level_cutoff_threshold=level_cutoff_threshold,
+                keep_features=keep_features
             )
 
             return [MethodResult(node) for node in graph._get_best_results(n_results)]
