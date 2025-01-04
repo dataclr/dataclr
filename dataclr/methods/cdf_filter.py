@@ -32,7 +32,7 @@ class CumulativeDistributionFunction(FilterMethod):
         self.bins = bins
 
     def fit(
-        self, X_train: pd.DataFrame, y_train: pd.Series
+        self, X_train: pd.DataFrame, y_train: pd.Series,keep_features: list[str] = [],
     ) -> CumulativeDistributionFunction:
         """
         Fits the CDF feature selection process by computing feature scores

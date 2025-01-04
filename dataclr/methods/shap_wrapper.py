@@ -29,7 +29,7 @@ class ShapMethod(WrapperMethod):
         super().__init__(model, metric, n_results, seed)
         self.ranked_features_ = pd.Series(dtype=float)
 
-    def fit(self, X_train: pd.DataFrame, X_test: pd.DataFrame) -> ShapMethod:
+    def fit(self, X_train: pd.DataFrame, X_test: pd.DataFrame,keep_features: list[str] = [],) -> ShapMethod:
         """
         Computes SHAP values for each feature and ranks them.
 
@@ -119,8 +119,8 @@ class ShapMethod(WrapperMethod):
         keep_features: list[str] = [],
     ) -> list[Result]:
         try:
-            self.model.fit(data_splits["X_train"], data_splits["y_train"])
-            self.fit(data_splits["X_train"], data_splits["X_test"])
+            self.model.fit(data_splits["X_train"], data_splits["y_train"],keep_features)
+            self.fit(data_splits["X_train"], data_splits["X_test"],keep_features)
         except ValueError:
             return []
 

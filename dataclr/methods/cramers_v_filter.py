@@ -21,7 +21,7 @@ class CramersV(FilterMethod):
                               methods.
     """
 
-    def fit(self, X_train: pd.DataFrame, y_train: pd.Series) -> "CramersV":
+    def fit(self, X_train: pd.DataFrame, y_train: pd.Series,keep_features: list[str] = [],) -> "CramersV":
         """
         Computes Cramér's V statistic for each categorical feature and ranks them.
 

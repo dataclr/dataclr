@@ -18,7 +18,7 @@ class KendallCorrelation(FilterMethod):
                               methods.
     """
 
-    def fit(self, X_train: pd.DataFrame, y_train: pd.Series) -> KendallCorrelation:
+    def fit(self, X_train: pd.DataFrame, y_train: pd.Series,keep_features: list[str] = [],) -> KendallCorrelation:
         """
         Computes Kendall's Tau correlation for each feature and ranks them.
 

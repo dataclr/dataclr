@@ -18,7 +18,7 @@ class DistanceCorrelation(FilterMethod):
                               methods.
     """
 
-    def fit(self, X_train: pd.DataFrame, y_train: pd.Series) -> DistanceCorrelation:
+    def fit(self, X_train: pd.DataFrame, y_train: pd.Series,keep_features: list[str] = [],) -> DistanceCorrelation:
         """
         Computes distance correlation for each feature and ranks them.
 

@@ -71,7 +71,7 @@ class Method(ABC):
 
         return self.transform(X_train, X_test, y_train, y_test)
 
-    def fit(self, X_train: pd.DataFrame, y_train: pd.Series) -> Method:
+    def fit(self, X_train: pd.DataFrame, y_train: pd.Series,keep_features: list[str] = [],) -> Method:
         """
         Fits the model using the provided training data.
 

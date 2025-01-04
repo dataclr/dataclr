@@ -21,7 +21,7 @@ class mRMR(FilterMethod):
                               methods.
     """
 
-    def fit(self, X_train: pd.DataFrame, y_train: pd.Series) -> mRMR:
+    def fit(self, X_train: pd.DataFrame, y_train: pd.Series,keep_features: list[str] = [],) -> mRMR:
         """
         Selects features by optimizing for both relevance and minimal redundancy.
 

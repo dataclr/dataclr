@@ -131,7 +131,7 @@ class FilterMethod(Method, ABC):
         keep_features: list[str] = [],
     ) -> list[Result]:
         try:
-            self.fit(data_splits["X_train"], data_splits["y_train"])
+            self.fit(data_splits["X_train"], data_splits["y_train"],keep_features)
         except ValueError:
             self.ranked_features_ = pd.Series(dtype=float)
 

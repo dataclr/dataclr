@@ -18,7 +18,7 @@ class Kurtosis(FilterMethod):
                               methods.
     """
 
-    def fit(self, X_train: pd.DataFrame, y_train: pd.Series = pd.Series()) -> Kurtosis:
+    def fit(self, X_train: pd.DataFrame, y_train: pd.Series = pd.Series(),keep_features: list[str] = [],) -> Kurtosis:
         """
         Computes the kurtosis for each feature and ranks them in descending order.
 

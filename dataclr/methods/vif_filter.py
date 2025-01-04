@@ -40,7 +40,7 @@ class VarianceInflationFactor(FilterMethod):
         self.threshold = threshold
 
     def fit(
-        self, X_train: pd.DataFrame, y_train: pd.Series = pd.Series()
+        self, X_train: pd.DataFrame, y_train: pd.Series = pd.Series(),keep_features: list[str] = [],
     ) -> VarianceInflationFactor:
         """
         Computes the Variance Inflation Factor (VIF) for each feature and filters those

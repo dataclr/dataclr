@@ -17,7 +17,7 @@ class RecursiveFeatureElimination(WrapperMethod):
         self.result_list: list[Result] = []
 
     def fit(
-        self, X_train: pd.DataFrame = pd.DataFrame(), y_train: pd.Series = pd.Series()
+        self, X_train: pd.DataFrame = pd.DataFrame(), y_train: pd.Series = pd.Series(),keep_features: list[str] = [],
     ) -> RecursiveFeatureElimination:
         return self
 

@@ -27,7 +27,7 @@ class BorutaMethod(WrapperMethod):
         super().__init__(model, metric, n_results, seed)
         self.ranked_features_ = pd.Series(dtype=float)
 
-    def fit(self, X_train: pd.DataFrame, y_train: pd.Series) -> BorutaMethod:
+    def fit(self, X_train: pd.DataFrame, y_train: pd.Series,keep_features: list[str] = [],) -> BorutaMethod:
         """
         Fits the Boruta feature selection process.
 
@@ -94,7 +94,7 @@ class BorutaMethod(WrapperMethod):
         keep_features: list[str] = [],
     ) -> list[Result]:
         try:
-            self.fit(data_splits["X_train"], data_splits["y_train"])
+            self.fit(data_splits["X_train"], data_splits["y_train"],keep_features)
         except ValueError:
             return []
 

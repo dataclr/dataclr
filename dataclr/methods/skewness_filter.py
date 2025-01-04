@@ -18,7 +18,7 @@ class Skewness(FilterMethod):
                               methods.
     """
 
-    def fit(self, X_train: pd.DataFrame, y_train: pd.Series = pd.Series()) -> Skewness:
+    def fit(self, X_train: pd.DataFrame, y_train: pd.Series = pd.Series(),keep_features: list[str] = [],) -> Skewness:
         """
         Computes the skewness for each feature and ranks them in descending order.
 
