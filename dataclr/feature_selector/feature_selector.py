@@ -144,6 +144,14 @@ class FeatureSelector:
         """
 
         with threadpool_limits(limits=1, user_api="blas"):
+            if keep_features:
+                for feature in keep_features:
+                    if feature not in list(self.data_splits["X_train"].columns):
+                        print(
+                            f"Feature named '{feature}' "
+                            f"listed in keep_features does not exist in the dataset."
+                        )
+                        return []
             if filter_methods is None:
                 filter_methods = filter_classes
             if wrapper_methods is None:
