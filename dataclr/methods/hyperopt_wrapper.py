@@ -98,9 +98,12 @@ class HyperoptMethod(WrapperMethod):
         if self.n_trials is None:
             self.n_trials = len(data_splits["X_train"].columns) * 10
         trials = Trials()
-
+        
+        feature_names_in_order = data_splits["X_train"].columns.tolist()
+        keep_feature_indexes = [feature_names_in_order.index(f) for f in keep_features if f in feature_names_in_order]
+        
         space = {
-            f"feature_{i}": hp.choice(f"feature_{i}", [0, 1])
+            f"feature_{i}": 1 if i in keep_feature_indexes else hp.choice(f"feature_{i}", [0, 1])
             for i in range(data_splits["X_train"].shape[1])
         }
 
@@ -123,7 +126,7 @@ class HyperoptMethod(WrapperMethod):
         self,
         params,
         data_splits: DataSplits,
-        cached_performance: dict[int, ResultPerformance],
+        cached_performance: dict[int, ResultPerformance]
     ) -> float:
         cols = [i for i, j in params.items() if j == 1]
         feature_indices = [int(name.split("_")[1]) for name in cols]
