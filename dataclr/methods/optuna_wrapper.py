@@ -102,6 +102,7 @@ class OptunaMethod(WrapperMethod):
         return self._optimize(
             data_splits=data_splits,
             cached_performance=cached_performance,
+            keep_features=keep_features,
         )
 
     def _optimize(
