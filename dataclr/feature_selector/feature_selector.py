@@ -136,7 +136,8 @@ class FeatureSelector:
                 utilize all available processors. Defaults to -1.
             max_console_width (int): The maximum width of the console output
                 for UI display purposes. Defaults to 110.
-            keep_features (list[str])): List of features to be keept. Defaults to empty.
+            keep_features (list[str])): List of features not to be dropped. Defaults to
+                empty.
 
         Returns:
             list[:class:`~dataclr.results.MethodResult`]: A list of the best results
@@ -145,13 +146,16 @@ class FeatureSelector:
 
         with threadpool_limits(limits=1, user_api="blas"):
             if keep_features:
-                for feature in keep_features:
-                    if feature not in list(self.data_splits["X_train"].columns):
-                        print(
-                            f"Feature named '{feature}' "
-                            f"listed in keep_features does not exist in the dataset."
-                        )
-                        return []
+                missing_features = [
+                    feature
+                    for feature in keep_features
+                    if feature not in self.data_splits["X_train"].columns
+                ]
+                if missing_features:
+                    for feature in missing_features:
+                        print(f"Invalid feature '{feature}' in keep_features.")
+                    return []
+
             if filter_methods is None:
                 filter_methods = filter_classes
             if wrapper_methods is None:
