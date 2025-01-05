@@ -115,7 +115,10 @@ class ShapMethod(WrapperMethod):
         return pd.Series(mean_shap_values, index=X_train.columns).sort_values()
 
     def _get_results(
-        self, data_splits: DataSplits, cached_performance: dict[int, ResultPerformance]
+        self,
+        data_splits: DataSplits,
+        cached_performance: dict[int, ResultPerformance],
+        keep_features: list[str] = [],
     ) -> list[Result]:
         try:
             self.model.fit(data_splits["X_train"], data_splits["y_train"])
@@ -127,4 +130,5 @@ class ShapMethod(WrapperMethod):
             data_splits=data_splits,
             sorted_list=self.ranked_features_,
             cached_performance=cached_performance,
+            keep_features=keep_features,
         )

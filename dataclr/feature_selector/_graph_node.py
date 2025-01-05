@@ -27,6 +27,7 @@ class GraphNode:
         cached_results: dict[int, list[Result]],
         cached_performance: dict[int, ResultPerformance],
         method: Method,
+        keep_features: list[str] = [],
     ) -> list[Result]:
         if method is None:
             raise ValueError("Error in get_results!")
@@ -42,7 +43,9 @@ class GraphNode:
             y_test=data_splits["y_test"],
         )
 
-        results = method._get_results(filtered_data_splits, cached_performance)
+        results = method._get_results(
+            filtered_data_splits, cached_performance, keep_features
+        )
         cached_results[combination_hash] = results
 
         return results

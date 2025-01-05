@@ -94,17 +94,22 @@ class OptunaMethod(WrapperMethod):
         return self._get_results(data_splits, {})
 
     def _get_results(
-        self, data_splits: DataSplits, cached_performance: dict[int, ResultPerformance]
+        self,
+        data_splits: DataSplits,
+        cached_performance: dict[int, ResultPerformance],
+        keep_features: list[str] = [],
     ) -> list[Result]:
         return self._optimize(
             data_splits=data_splits,
             cached_performance=cached_performance,
+            keep_features=keep_features,
         )
 
     def _optimize(
         self,
         data_splits: DataSplits,
         cached_performance: dict[int, ResultPerformance],
+        keep_features: list[str] = [],
     ) -> list[Result]:
         if self.n_trials is None:
             self.n_trials = len(data_splits["X_train"].columns) * 10
@@ -123,6 +128,7 @@ class OptunaMethod(WrapperMethod):
             self._objective,
             data_splits=data_splits,
             cached_performance=cached_performance,
+            keep_features=keep_features,
         )
         study.optimize(objective_with_params, n_trials=self.n_trials)
 
@@ -139,9 +145,22 @@ class OptunaMethod(WrapperMethod):
         trial: optuna.Trial,
         data_splits: DataSplits,
         cached_performance: dict[int, ResultPerformance],
+        keep_features: list[str] = [],
     ) -> float:
+        feature_names_in_order = data_splits["X_train"].columns.tolist()
+
+        keep_feature_indexes = [
+            feature_names_in_order.index(f)
+            for f in keep_features
+            if f in feature_names_in_order
+        ]
+
         feature_mask = [
-            trial.suggest_categorical(f"feature_{i}", [0, 1])
+            (
+                1
+                if i in keep_feature_indexes
+                else trial.suggest_categorical(f"feature_{i}", [0, 1])
+            )
             for i in range(data_splits["X_train"].shape[1])
         ]
         selected_features_indexes = [
