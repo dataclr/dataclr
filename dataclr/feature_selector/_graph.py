@@ -138,7 +138,7 @@ class Graph:
                 self.cached_results,
                 self.cached_performance,
                 method,
-                self.keep_features
+                self.keep_features,
             )
 
             future_params = []

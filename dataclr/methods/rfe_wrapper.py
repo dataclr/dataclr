@@ -38,12 +38,14 @@ class RecursiveFeatureElimination(WrapperMethod):
         return self._get_results(data_splits, {})
 
     def _get_results(
-        self, data_splits: DataSplits, cached_performance: dict[int, ResultPerformance],
+        self,
+        data_splits: DataSplits,
+        cached_performance: dict[int, ResultPerformance],
         keep_features: list[str] = [],
     ) -> list[Result]:
         selected_features = list(data_splits["X_train"].columns)
         remaining_features = list(data_splits["X_train"].columns)
-        
+
         for feature in keep_features:
             remaining_features.remove(feature)
 

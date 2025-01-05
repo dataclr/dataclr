@@ -112,7 +112,7 @@ class FilterMethod(Method, ABC):
             sorted_list=sorted_list,
             data_splits=data_splits,
             cached_performance=cached_performance,
-            keep_features=keep_features
+            keep_features=keep_features,
         )
         study.optimize(
             objective_with_params,
@@ -123,14 +123,18 @@ class FilterMethod(Method, ABC):
         base_sorted_features = sorted_list.index
 
         best_params = self._get_n_best_params(
-            study=study, base_result=base_result, base_features=base_sorted_features,
-            keep_features=keep_features
+            study=study,
+            base_result=base_result,
+            base_features=base_sorted_features,
+            keep_features=keep_features,
         )
 
         return best_params
 
     def _get_results(
-        self, data_splits: DataSplits, cached_performance: dict[int, ResultPerformance],
+        self,
+        data_splits: DataSplits,
+        cached_performance: dict[int, ResultPerformance],
         keep_features: list[str] = [],
     ) -> list[Result]:
         try:
@@ -154,7 +158,7 @@ class FilterMethod(Method, ABC):
         keep_features: list[str] = [],
     ) -> float:
         filtered_list = sorted_list[~sorted_list.index.isin(keep_features)]
-        
+
         k = trial.suggest_int("k", 1, max(len(filtered_list) - 1, 1))
         for previous_trial in trial.study.trials:
             if (
@@ -238,9 +242,9 @@ class FilterMethod(Method, ABC):
 
         best_params = []
         base_features = list(base_features)
-        
+
         if base_features:
-            for feature in keep_features:  
+            for feature in keep_features:
                 base_features.remove(feature)
         for i in range(min(self.n_results, len(sorted_df))):
             best_trial = study.trials[sorted_df.index[i]]
@@ -251,7 +255,7 @@ class FilterMethod(Method, ABC):
                 key: best_trial.user_attrs.get(key)
                 for key in ["r2", "rmse", "accuracy", "precision", "recall", "f1"]
             }
-            feature_list=base_features[params["k"] :]
+            feature_list = base_features[params["k"] :]
             feature_list.extend(keep_features)
             best_params.append(
                 Result(

@@ -190,7 +190,7 @@ class FeatureSelector:
                 max_depth=max_depth,
                 start_wrappers=start_wrappers,
                 level_cutoff_threshold=level_cutoff_threshold,
-                keep_features=keep_features
+                keep_features=keep_features,
             )
 
             return [MethodResult(node) for node in graph._get_best_results(n_results)]

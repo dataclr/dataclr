@@ -43,7 +43,9 @@ class GraphNode:
             y_test=data_splits["y_test"],
         )
 
-        results = method._get_results(filtered_data_splits, cached_performance,keep_features)
+        results = method._get_results(
+            filtered_data_splits, cached_performance, keep_features
+        )
         cached_results[combination_hash] = results
 
         return results
