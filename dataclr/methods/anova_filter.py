@@ -20,7 +20,7 @@ class ANOVA(FilterMethod):
                               methods.
     """
 
-    def fit(self, X_train: pd.DataFrame, y_train: pd.Series,keep_features: list[str] = [],) -> ANOVA:
+    def fit(self, X_train: pd.DataFrame, y_train: pd.Series) -> ANOVA:
         """
         Computes the ANOVA F-statistics for each feature and ranks them.
 

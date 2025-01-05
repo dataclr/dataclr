@@ -20,7 +20,7 @@ class CohensD(FilterMethod):
                               methods.
     """
 
-    def fit(self, X_train: pd.DataFrame, y_train: pd.Series,keep_features: list[str] = [],) -> CohensD:
+    def fit(self, X_train: pd.DataFrame, y_train: pd.Series) -> CohensD:
         """
         Computes Cohen's D effect size for each feature and ranks them.
 

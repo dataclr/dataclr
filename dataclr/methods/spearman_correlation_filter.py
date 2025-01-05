@@ -18,7 +18,7 @@ class SpearmanCorrelation(FilterMethod):
                               methods.
     """
 
-    def fit(self, X_train: pd.DataFrame, y_train: pd.Series,keep_features: list[str] = [],) -> SpearmanCorrelation:
+    def fit(self, X_train: pd.DataFrame, y_train: pd.Series) -> SpearmanCorrelation:
         """
         Computes Spearman's rank correlation coefficient for each feature and ranks
         them.

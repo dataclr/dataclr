@@ -47,7 +47,7 @@ class OptunaMethod(WrapperMethod):
         self.n_trials = None
 
     def fit(
-        self, X_train: pd.DataFrame, y_train: pd.Series = pd.Series(),keep_features: list[str] = [],
+        self, X_train: pd.DataFrame, y_train: pd.Series = pd.Series()
     ) -> OptunaMethod:
         """
         Placeholder method for fitting the feature selection process.

@@ -32,7 +32,7 @@ class MaximalInformationCoefficient(FilterMethod):
         self.bins = bins
 
     def fit(
-        self, X_train: pd.DataFrame, y_train: pd.Series,keep_features: list[str] = [],
+        self, X_train: pd.DataFrame, y_train: pd.Series
     ) -> MaximalInformationCoefficient:
         """
         Computes the Maximal Information Coefficient (MIC) for each feature and

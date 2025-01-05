@@ -43,7 +43,7 @@ class HyperoptMethod(WrapperMethod):
         self.result_list: list[Result] = []
 
     def fit(
-        self, X_train: pd.DataFrame, y_train: pd.Series = pd.Series(),keep_features: list[str] = [],
+        self, X_train: pd.DataFrame, y_train: pd.Series = pd.Series()
     ) -> HyperoptMethod:
         """
         Placeholder method for fitting the feature selection process.

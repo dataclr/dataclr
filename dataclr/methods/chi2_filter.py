@@ -19,7 +19,7 @@ class Chi2(FilterMethod):
                               methods.
     """
 
-    def fit(self, X_train: pd.DataFrame, y_train: pd.Series,keep_features: list[str] = [],) -> Chi2:
+    def fit(self, X_train: pd.DataFrame, y_train: pd.Series) -> Chi2:
         """
         Computes the Chi-squared statistic for each feature and ranks them.
 

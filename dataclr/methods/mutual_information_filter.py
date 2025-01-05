@@ -20,7 +20,7 @@ class MutualInformation(FilterMethod):
                               methods.
     """
 
-    def fit(self, X_train: pd.DataFrame, y_train: pd.Series,keep_features: list[str] = [],) -> MutualInformation:
+    def fit(self, X_train: pd.DataFrame, y_train: pd.Series) -> MutualInformation:
         """
         Computes mutual information between each feature and the target variable,
         and ranks the features.

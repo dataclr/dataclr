@@ -19,7 +19,7 @@ class MeanAbsoluteDeviation(FilterMethod):
     """
 
     def fit(
-        self, X_train: pd.DataFrame, y_train: pd.Series = pd.Series(),keep_features: list[str] = [],
+        self, X_train: pd.DataFrame, y_train: pd.Series = pd.Series()
     ) -> MeanAbsoluteDeviation:
         """
         Computes the Mean Absolute Deviation (MAD) for each feature and ranks them.

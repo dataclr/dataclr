@@ -19,7 +19,7 @@ class VarianceThreshold(FilterMethod):
     """
 
     def fit(
-        self, X_train: pd.DataFrame, y_train: pd.Series = pd.Series(),keep_features: list[str] = [],
+        self, X_train: pd.DataFrame, y_train: pd.Series = pd.Series()
     ) -> VarianceThreshold:
         """
         Computes the variance for each feature and ranks them.
