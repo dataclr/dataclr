@@ -1,7 +1,7 @@
 # dataclr: The feature selection library
 
 [![PyPI version](https://img.shields.io/pypi/v/dataclr?label=PyPI&color=blue)](https://pypi.org/project/dataclr/)
-[![Python Versions](https://img.shields.io/badge/python-3.9%20|%203.10%20|%203.11%20|%203.12-blue)](https://www.python.org/)
+[![Python Versions](https://img.shields.io/badge/python-3.9%20|%203.10%20|%203.11%20|%203.12%20|%203.13-blue)](https://www.python.org/)
 [![License](https://img.shields.io/github/license/dataclr/dataclr?color=blue)](https://github.com/dataclr/dataclr/blob/main/LICENSE)
 [![GitHub stars](https://img.shields.io/github/stars/dataclr/dataclr?label=Stars&color=yellow)](https://github.com/dataclr/dataclr/stargazers)
 
