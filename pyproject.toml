@@ -53,6 +53,9 @@ docs = [
     "sphinx>=5.0.0",
     "sphinxawesome-theme>=2.0.0"
 ]
+test = [
+    "pytest>=8.3.4"
+]
 
 [tool.black]
 line-length = 88

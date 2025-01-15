@@ -60,3 +60,10 @@ class Result:
         return (
             f"Performance: {self.performance} | Feature count: {len(self.feature_list)}"
         )
+
+    def __eq__(self, other):
+        if not isinstance(other, Result):
+            return NotImplemented
+        return self.performance == other.performance and len(self.feature_list) == len(
+            other.feature_list
+        )
