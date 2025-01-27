@@ -1,4 +1,6 @@
 .venv
+.pytest_cache
+pytest.ini
 __pycache__
 dataclr.egg-info
 build

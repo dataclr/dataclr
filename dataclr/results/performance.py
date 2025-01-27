@@ -63,6 +63,18 @@ class ResultPerformance:
             metrics.append(f"F1: {self.f1:.4f}")
         return " | ".join(metrics)
 
+    def __eq__(self, other) -> bool:
+        if not isinstance(other, ResultPerformance):
+            return NotImplemented
+        return (
+            self.rmse == other.rmse
+            and self.r2 == other.r2
+            and self.accuracy == other.accuracy
+            and self.precision == other.precision
+            and self.recall == other.recall
+            and self.f1 == other.f1
+        )
+
 
 class RegressionPerformance(ResultPerformance):
     """
