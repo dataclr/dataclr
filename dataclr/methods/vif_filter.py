@@ -68,7 +68,7 @@ class VarianceInflationFactor(FilterMethod):
             }
         )
 
-        filtered_features = vif_data[vif_data["VIF"] >= self.threshold]["feature"]
+        filtered_features = vif_data["feature"]
 
         self.ranked_features_ = (
             vif_data[vif_data["feature"].isin(filtered_features)]

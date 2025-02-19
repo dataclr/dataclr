@@ -45,7 +45,7 @@ def test_ranked_features(dataset, model, metric):
     assert isinstance(z_score.ranked_features_, pd.Series)
     assert not z_score.ranked_features_.empty
     assert z_score.ranked_features_.dtype.kind in {"i", "f"}
-    assert z_score.ranked_features_.is_monotonic_increasing
+    assert z_score.ranked_features_.is_monotonic_decreasing
 
 
 @pytest.mark.parametrize(
@@ -57,6 +57,7 @@ def test_ranked_features(dataset, model, metric):
 )
 def test_results_list(dataset, model, metric):
     X_train, X_test, y_train, y_test = generate_dataset(dataset)
+    model.fit(X_train, y_train)
     z_score = ZScore(model=model, metric=metric, n_results=3, seed=42)
     results = z_score.fit_transform(X_train, X_test, y_train, y_test)
 

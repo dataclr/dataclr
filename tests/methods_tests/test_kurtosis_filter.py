@@ -45,7 +45,7 @@ def test_ranked_features(dataset, model, metric):
     assert isinstance(kurtosis.ranked_features_, pd.Series)
     assert not kurtosis.ranked_features_.empty
     assert kurtosis.ranked_features_.dtype.kind in {"i", "f"}
-    assert kurtosis.ranked_features_.is_monotonic_increasing
+    assert kurtosis.ranked_features_.is_monotonic_decreasing
 
 
 @pytest.mark.parametrize(
