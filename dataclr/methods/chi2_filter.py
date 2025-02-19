@@ -38,6 +38,9 @@ class Chi2(FilterMethod):
         if is_regression(self.metric):
             raise ValueError("Chi2 cannot be used for regression task!")
 
+        if X_train.min().min() < 0:
+            X_train = X_train - X_train.min().min()
+
         chi2_scores, _ = chi2(X_train, y_train)
 
         self.ranked_features_ = (
