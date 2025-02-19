@@ -4,12 +4,12 @@ from typing import Callable
 
 import pandas as pd
 import pytest
-from sklearn.datasets import make_classification, make_regression
-from sklearn.linear_model import LinearRegression, LogisticRegression
+from sklearn.datasets import make_classification
+from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 
 from dataclr.methods import CohensD
-from dataclr.metrics.metrics import CLASSIFICATION_METRICS, REGRESSION_METRICS
+from dataclr.metrics.metrics import CLASSIFICATION_METRICS
 from dataclr.results import Result, ResultPerformance
 
 
@@ -33,7 +33,6 @@ def generate_dataset(
 @pytest.mark.parametrize(
     "dataset, model, metric",
     [
-        (make_regression, LinearRegression(), "rmse"),
         (make_classification, LogisticRegression(solver="liblinear"), "accuracy"),
     ],
 )
@@ -51,7 +50,6 @@ def test_ranked_features(dataset, model, metric):
 @pytest.mark.parametrize(
     "dataset, model, metric",
     [
-        (make_regression, LinearRegression(), "rmse"),
         (make_classification, LogisticRegression(solver="liblinear"), "accuracy"),
     ],
 )
@@ -68,7 +66,6 @@ def test_results_list(dataset, model, metric):
 @pytest.mark.parametrize(
     "dataset, model, metric, metrics",
     [
-        (make_regression, LinearRegression(), "rmse", REGRESSION_METRICS),
         (
             make_classification,
             LogisticRegression(solver="liblinear"),
@@ -89,7 +86,12 @@ def test_result_performance(dataset, model, metric, metrics):
 
 
 def test_empty_dataset():
-    cohens_d = CohensD(model=LinearRegression(), metric="rmse", n_results=3, seed=42)
+    cohens_d = CohensD(
+        model=LogisticRegression(solver="liblinear"),
+        metric="accuracy",
+        n_results=3,
+        seed=42,
+    )
     results = cohens_d.fit_transform(
         pd.DataFrame(), pd.DataFrame(), pd.Series(), pd.Series()
     )
