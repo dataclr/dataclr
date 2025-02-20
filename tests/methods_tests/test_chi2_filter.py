@@ -5,7 +5,6 @@ from typing import Callable
 import pandas as pd
 import pytest
 from sklearn.datasets import make_classification
-from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 
@@ -36,7 +35,7 @@ def generate_dataset(
     [
         (
             make_classification,
-            RandomForestClassifier(max_depth=10, n_estimators=10),
+            LogisticRegression(solver="liblinear"),
             "accuracy",
         ),
     ],
@@ -58,7 +57,7 @@ def test_ranked_features(dataset, model, metric):
     [
         (
             make_classification,
-            RandomForestClassifier(max_depth=10, n_estimators=10),
+            LogisticRegression(solver="liblinear"),
             "accuracy",
         ),
     ],
@@ -96,7 +95,12 @@ def test_result_performance(dataset, model, metric, metrics):
 
 
 def test_empty_dataset():
-    chi2 = Chi2(model=RandomForestClassifier(), metric="rmse", n_results=3, seed=42)
+    chi2 = Chi2(
+        model=LogisticRegression(solver="liblinear"),
+        metric="rmse",
+        n_results=3,
+        seed=42,
+    )
     results = chi2.fit_transform(
         pd.DataFrame(), pd.DataFrame(), pd.Series(), pd.Series()
     )
