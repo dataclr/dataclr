@@ -6,6 +6,7 @@ import pandas as pd
 import pytest
 from sklearn.datasets import make_classification, make_regression
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
+from sklearn.linear_model import LinearRegression, LogisticRegression
 from sklearn.model_selection import train_test_split
 
 from dataclr.methods import ShapMethod
@@ -37,6 +38,12 @@ def generate_dataset(
         (
             make_classification,
             RandomForestClassifier(max_depth=10, n_estimators=10),
+            "accuracy",
+        ),
+        (make_regression, LinearRegression(), "rmse"),
+        (
+            make_classification,
+            LogisticRegression(solver="liblinear"),
             "accuracy",
         ),
     ],
