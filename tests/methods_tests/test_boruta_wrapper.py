@@ -6,6 +6,7 @@ import pandas as pd
 import pytest
 from sklearn.datasets import make_classification, make_regression
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
+from sklearn.linear_model import LinearRegression, LogisticRegression
 from sklearn.model_selection import train_test_split
 
 from dataclr.methods import BorutaMethod
@@ -51,6 +52,27 @@ def test_ranked_features(dataset, model, metric):
     assert not boruta.ranked_features_.empty
     assert boruta.ranked_features_.dtype.kind in {"i", "f"}
     assert boruta.ranked_features_.is_monotonic_decreasing
+
+
+@pytest.mark.parametrize(
+    "dataset, model, metric",
+    [
+        (make_regression, LinearRegression(), "rmse"),
+        (
+            make_classification,
+            LogisticRegression(solver="liblinear"),
+            "accuracy",
+        ),
+    ],
+)
+def test_ranked_features_with_no_importance_model(dataset, model, metric):
+    X_train, X_test, y_train, y_test = generate_dataset(dataset)
+    model.fit(X_train, y_train)
+    boruta = BorutaMethod(model=model, metric=metric, n_results=3, seed=42)
+    boruta.fit_transform(X_train, X_test, y_train, y_test)
+
+    assert isinstance(boruta.ranked_features_, pd.Series)
+    assert boruta.ranked_features_.empty
 
 
 @pytest.mark.parametrize(
