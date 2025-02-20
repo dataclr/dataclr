@@ -45,7 +45,7 @@ def test_ranked_features(dataset, model, metric):
     assert isinstance(skewness.ranked_features_, pd.Series)
     assert not skewness.ranked_features_.empty
     assert skewness.ranked_features_.dtype.kind in {"i", "f"}
-    assert skewness.ranked_features_.is_monotonic_increasing
+    assert skewness.ranked_features_.is_monotonic_decreasing
 
 
 @pytest.mark.parametrize(

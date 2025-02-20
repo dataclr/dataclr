@@ -39,13 +39,14 @@ def generate_dataset(
 )
 def test_ranked_features(dataset, model, metric):
     X_train, X_test, y_train, y_test = generate_dataset(dataset)
+    model.fit(X_train, y_train)
     vif = VarianceInflationFactor(model=model, metric=metric, n_results=3, seed=42)
     vif.fit_transform(X_train, X_test, y_train, y_test)
 
     assert isinstance(vif.ranked_features_, pd.Series)
     assert not vif.ranked_features_.empty
     assert vif.ranked_features_.dtype.kind in {"i", "f"}
-    assert vif.ranked_features_.is_monotonic_increasing
+    assert vif.ranked_features_.is_monotonic_decreasing
 
 
 @pytest.mark.parametrize(

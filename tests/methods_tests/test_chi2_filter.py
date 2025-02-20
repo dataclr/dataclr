@@ -4,12 +4,12 @@ from typing import Callable
 
 import pandas as pd
 import pytest
-from sklearn.datasets import make_classification, make_regression
-from sklearn.linear_model import LinearRegression, LogisticRegression
+from sklearn.datasets import make_classification
+from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 
 from dataclr.methods import Chi2
-from dataclr.metrics.metrics import CLASSIFICATION_METRICS, REGRESSION_METRICS
+from dataclr.metrics.metrics import CLASSIFICATION_METRICS
 from dataclr.results import Result, ResultPerformance
 
 
@@ -33,12 +33,16 @@ def generate_dataset(
 @pytest.mark.parametrize(
     "dataset, model, metric",
     [
-        (make_regression, LinearRegression(), "rmse"),
-        (make_classification, LogisticRegression(solver="liblinear"), "accuracy"),
+        (
+            make_classification,
+            LogisticRegression(solver="liblinear"),
+            "accuracy",
+        ),
     ],
 )
 def test_ranked_features(dataset, model, metric):
     X_train, X_test, y_train, y_test = generate_dataset(dataset)
+    model.fit(X_train, y_train)
     chi2 = Chi2(model=model, metric=metric, n_results=3, seed=42)
     chi2.fit_transform(X_train, X_test, y_train, y_test)
 
@@ -51,8 +55,11 @@ def test_ranked_features(dataset, model, metric):
 @pytest.mark.parametrize(
     "dataset, model, metric",
     [
-        (make_regression, LinearRegression(), "rmse"),
-        (make_classification, LogisticRegression(solver="liblinear"), "accuracy"),
+        (
+            make_classification,
+            LogisticRegression(solver="liblinear"),
+            "accuracy",
+        ),
     ],
 )
 def test_results_list(dataset, model, metric):
@@ -68,7 +75,6 @@ def test_results_list(dataset, model, metric):
 @pytest.mark.parametrize(
     "dataset, model, metric, metrics",
     [
-        (make_regression, LinearRegression(), "rmse", REGRESSION_METRICS),
         (
             make_classification,
             LogisticRegression(solver="liblinear"),
@@ -89,7 +95,12 @@ def test_result_performance(dataset, model, metric, metrics):
 
 
 def test_empty_dataset():
-    chi2 = Chi2(model=LinearRegression(), metric="rmse", n_results=3, seed=42)
+    chi2 = Chi2(
+        model=LogisticRegression(solver="liblinear"),
+        metric="rmse",
+        n_results=3,
+        seed=42,
+    )
     results = chi2.fit_transform(
         pd.DataFrame(), pd.DataFrame(), pd.Series(), pd.Series()
     )

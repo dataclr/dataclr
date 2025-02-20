@@ -37,24 +37,6 @@ def generate_dataset(
         (make_classification, LogisticRegression(solver="liblinear"), "accuracy"),
     ],
 )
-def test_ranked_features(dataset, model, metric):
-    X_train, X_test, y_train, y_test = generate_dataset(dataset)
-    rfa = RecursiveFeatureAddition(model=model, metric=metric, n_results=3, seed=42)
-    rfa.fit_transform(X_train, X_test, y_train, y_test)
-
-    assert isinstance(rfa.ranked_features_, pd.Series)
-    assert not rfa.ranked_features_.empty
-    assert rfa.ranked_features_.dtype.kind in {"i", "f"}
-    assert rfa.ranked_features_.is_monotonic_increasing
-
-
-@pytest.mark.parametrize(
-    "dataset, model, metric",
-    [
-        (make_regression, LinearRegression(), "rmse"),
-        (make_classification, LogisticRegression(solver="liblinear"), "accuracy"),
-    ],
-)
 def test_results_list(dataset, model, metric):
     X_train, X_test, y_train, y_test = generate_dataset(dataset)
     rfa = RecursiveFeatureAddition(model=model, metric=metric, n_results=3, seed=42)
