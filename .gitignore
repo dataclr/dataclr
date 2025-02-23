@@ -6,6 +6,7 @@ dataclr.egg-info
 build
 dist
 logs
+.vscode/settings.json
 
 datasets
 scripts
