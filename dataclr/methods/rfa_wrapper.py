@@ -48,11 +48,14 @@ class RecursiveFeatureAddition(WrapperMethod):
         selected_features: list[str] = keep_features
         remaining_features = list(data_splits["X_train"].columns)
 
+        if max_features == -1:
+            max_features = len(remaining_features)
+
         for feature in keep_features:
             remaining_features.remove(feature)
 
         while remaining_features:
-            worst_feature = None
+            best_feature = None
             best_performance = None
 
             for feature in remaining_features:
@@ -66,11 +69,11 @@ class RecursiveFeatureAddition(WrapperMethod):
                     performance, best_performance
                 ):
                     best_performance = performance
-                    worst_feature = feature
+                    best_feature = feature
 
-            if worst_feature is not None:
-                selected_features.append(worst_feature)
-                remaining_features.remove(worst_feature)
+            if best_feature is not None:
+                selected_features.append(best_feature)
+                remaining_features.remove(best_feature)
                 self.result_list.append(
                     Result(
                         params={"k": len(selected_features)},
@@ -78,6 +81,8 @@ class RecursiveFeatureAddition(WrapperMethod):
                         feature_list=selected_features[:],
                     )
                 )
+                if len(selected_features) >= max_features:
+                    break
             else:
                 break
 

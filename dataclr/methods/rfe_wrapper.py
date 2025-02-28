@@ -48,6 +48,9 @@ class RecursiveFeatureElimination(WrapperMethod):
         selected_features = list(data_splits["X_train"].columns)
         remaining_features = list(data_splits["X_train"].columns)
 
+        if max_features == -1:
+            max_features = len(remaining_features)
+
         for feature in keep_features:
             remaining_features.remove(feature)
 
@@ -73,13 +76,14 @@ class RecursiveFeatureElimination(WrapperMethod):
             if worst_feature is not None:
                 selected_features.remove(worst_feature)
                 remaining_features.remove(worst_feature)
-                self.result_list.append(
-                    Result(
-                        params={"k": len(selected_features)},
-                        performance=best_performance,
-                        feature_list=selected_features[:],
+                if len(selected_features) <= max_features:
+                    self.result_list.append(
+                        Result(
+                            params={"k": len(selected_features)},
+                            performance=best_performance,
+                            feature_list=selected_features[:],
+                        )
                     )
-                )
             else:
                 break
 
