@@ -66,6 +66,7 @@ class ShapMethod(WrapperMethod):
         X_test: pd.DataFrame,
         y_train: pd.Series,
         y_test: pd.Series,
+        max_features: int = -1,
     ) -> list[Result]:
         """
         Applies the SHAP-based feature selection process to evaluate and optimize
@@ -98,6 +99,7 @@ class ShapMethod(WrapperMethod):
             data_splits=data_splits,
             sorted_list=self.ranked_features_,
             cached_performance={},
+            max_features=max_features,
         )
 
     def _get_shap_series(
@@ -122,6 +124,7 @@ class ShapMethod(WrapperMethod):
         data_splits: DataSplits,
         cached_performance: dict[int, ResultPerformance],
         keep_features: list[str] = [],
+        max_features: int = -1,
     ) -> list[Result]:
         try:
             self.model.fit(data_splits["X_train"], data_splits["y_train"])
@@ -134,6 +137,7 @@ class ShapMethod(WrapperMethod):
             sorted_list=self.ranked_features_,
             cached_performance=cached_performance,
             keep_features=keep_features,
+            max_features=max_features,
         )
 
     def fit_transform(
@@ -142,6 +146,7 @@ class ShapMethod(WrapperMethod):
         X_test: pd.DataFrame,
         y_train: pd.Series,
         y_test: pd.Series,
+        max_features: int = -1,
     ) -> list[Result]:
         """
         Fits the model using the training data and returns results based on the model.
@@ -167,4 +172,4 @@ class ShapMethod(WrapperMethod):
         except ValueError:
             return []
 
-        return self.transform(X_train, X_test, y_train, y_test)
+        return self.transform(X_train, X_test, y_train, y_test, max_features)

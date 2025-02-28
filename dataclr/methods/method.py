@@ -73,7 +73,9 @@ class Method(ABC):
         except ValueError:
             return []
 
-        return self.transform(X_train, X_test, y_train, y_test)
+        return self.transform(
+            X_train, X_test, y_train, y_test, max_features=max_features
+        )
 
     def fit(
         self,

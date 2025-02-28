@@ -92,6 +92,7 @@ class FilterMethod(Method, ABC):
             data_splits=data_splits,
             sorted_list=self.ranked_features_,
             cached_performance={},
+            max_features=max_features,
         )
 
     def _optimize(
@@ -115,6 +116,7 @@ class FilterMethod(Method, ABC):
             data_splits=data_splits,
             cached_performance=cached_performance,
             keep_features=keep_features,
+            max_features=max_features,
         )
         study.optimize(
             objective_with_params,
@@ -150,6 +152,7 @@ class FilterMethod(Method, ABC):
             sorted_list=self.ranked_features_,
             cached_performance=cached_performance,
             keep_features=keep_features,
+            max_features=max_features,
         )
 
     def _objective(
@@ -163,7 +166,15 @@ class FilterMethod(Method, ABC):
     ) -> float:
         filtered_list = sorted_list[~sorted_list.index.isin(keep_features)]
 
-        k = trial.suggest_int("k", 1, max(len(filtered_list) - 1, 1))
+        max_features = 10
+
+        k = trial.suggest_int(
+            "k",
+            max(1, max(len(filtered_list) - 1, 1) - max_features),
+            max(len(filtered_list) - 1, 1),
+        )
+
+        # k = trial.suggest_int("k", 1, max(len(filtered_list) - 1, 1))
         for previous_trial in trial.study.trials:
             if (
                 previous_trial.state == TrialState.COMPLETE

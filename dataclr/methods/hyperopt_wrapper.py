@@ -65,6 +65,7 @@ class HyperoptMethod(WrapperMethod):
         X_test: pd.DataFrame,
         y_train: pd.Series,
         y_test: pd.Series,
+        max_features: int = -1,
     ) -> list[Result]:
         """
         Applies the feature selection process by evaluating subsets using
@@ -87,13 +88,14 @@ class HyperoptMethod(WrapperMethod):
             "y_test": y_test,
         }
 
-        return self._get_results(data_splits, {})
+        return self._get_results(data_splits, {}, max_features=max_features)
 
     def _get_results(
         self,
         data_splits: DataSplits,
         cached_performance: dict[int, ResultPerformance],
         keep_features: list[str] = [],
+        max_features: int = -1,
     ) -> list[Result]:
         if self.n_trials is None:
             self.n_trials = len(data_splits["X_train"].columns) * 10
@@ -114,7 +116,9 @@ class HyperoptMethod(WrapperMethod):
         }
 
         fmin(
-            fn=lambda params: self._objective(params, data_splits, cached_performance),
+            fn=lambda params: self._objective(
+                params, data_splits, cached_performance, max_features=max_features
+            ),
             space=space,
             algo=tpe.suggest,
             max_evals=self.n_trials,
@@ -133,6 +137,7 @@ class HyperoptMethod(WrapperMethod):
         params,
         data_splits: DataSplits,
         cached_performance: dict[int, ResultPerformance],
+        max_features: int = -1,
     ) -> float:
         cols = [i for i, j in params.items() if j == 1]
         feature_indices = [int(name.split("_")[1]) for name in cols]

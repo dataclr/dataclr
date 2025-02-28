@@ -27,6 +27,7 @@ class RecursiveFeatureAddition(WrapperMethod):
         X_test: pd.DataFrame,
         y_train: pd.Series,
         y_test: pd.Series,
+        max_features: int = -1,
     ) -> list[Result]:
         data_splits: DataSplits = {
             "X_train": X_train,
@@ -35,13 +36,14 @@ class RecursiveFeatureAddition(WrapperMethod):
             "y_test": y_test,
         }
 
-        return self._get_results(data_splits, {})
+        return self._get_results(data_splits, {}, max_features=max_features)
 
     def _get_results(
         self,
         data_splits: DataSplits,
         cached_performance: dict[int, ResultPerformance],
         keep_features: list[str] = [],
+        max_features: int = -1,
     ) -> list[Result]:
         selected_features: list[str] = keep_features
         remaining_features = list(data_splits["X_train"].columns)
