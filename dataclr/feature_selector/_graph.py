@@ -351,9 +351,11 @@ class Graph:
         duration = time.perf_counter() - start_time
 
         if self.max_features != -1:
+            new_best_results_list = []
             for result in self.best_results:
-                if len(result.feature_list) > self.max_features:
-                    self.best_results.remove(result)
+                if len(result.feature_list) <= self.max_features:
+                    new_best_results_list.append(result)
+            self.best_results = new_best_results_list
 
         if self.verbose:
             if self.best_results_history:
