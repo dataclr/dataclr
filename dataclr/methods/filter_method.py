@@ -46,6 +46,7 @@ class FilterMethod(Method, ABC):
         X_test: pd.DataFrame,
         y_train: pd.Series,
         y_test: pd.Series,
+        max_features: int = -1,
     ) -> list[Result]:
         """
         Returns results based on the ranked features determined during fitting.
@@ -99,6 +100,7 @@ class FilterMethod(Method, ABC):
         sorted_list: pd.Series,
         cached_performance: dict[int, ResultPerformance],
         keep_features: list[str] = [],
+        max_features: int = -1,
     ) -> list[Result]:
         study = optuna.create_study(
             directions=[
@@ -136,6 +138,7 @@ class FilterMethod(Method, ABC):
         data_splits: DataSplits,
         cached_performance: dict[int, ResultPerformance],
         keep_features: list[str] = [],
+        max_features: int = -1,
     ) -> list[Result]:
         try:
             self.fit(data_splits["X_train"], data_splits["y_train"])
@@ -156,6 +159,7 @@ class FilterMethod(Method, ABC):
         data_splits: DataSplits,
         cached_performance: dict[int, ResultPerformance],
         keep_features: list[str] = [],
+        max_features: int = -1,
     ) -> float:
         filtered_list = sorted_list[~sorted_list.index.isin(keep_features)]
 
