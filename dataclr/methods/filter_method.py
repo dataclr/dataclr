@@ -3,6 +3,7 @@ from __future__ import annotations
 import copy
 from abc import ABC
 from functools import partial
+from math import log2
 
 import optuna
 import pandas as pd
@@ -120,7 +121,7 @@ class FilterMethod(Method, ABC):
         )
         study.optimize(
             objective_with_params,
-            n_trials=max(5, len(data_splits["X_test"].columns) // 4),
+            n_trials=max(5, round(log2(len(data_splits["X_test"].columns)))),
         )
 
         base_result = train_eval(self.model, self.metric, data_splits)
@@ -166,7 +167,7 @@ class FilterMethod(Method, ABC):
     ) -> float:
         filtered_list = sorted_list[~sorted_list.index.isin(keep_features)]
 
-        max_features = 9
+        # max_features = 9
         if max_features == -1:
             max_features = len(filtered_list)
 
