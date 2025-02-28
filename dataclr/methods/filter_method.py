@@ -166,7 +166,9 @@ class FilterMethod(Method, ABC):
     ) -> float:
         filtered_list = sorted_list[~sorted_list.index.isin(keep_features)]
 
-        max_features = 10
+        max_features = 9
+        if max_features == -1:
+            max_features = len(filtered_list)
 
         k = trial.suggest_int(
             "k",
