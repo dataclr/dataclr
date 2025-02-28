@@ -32,6 +32,8 @@ class Graph:
         start_wrappers: bool = True,
         level_cutoff_threshold: int = 300,
         keep_features: list[str] = [],
+        max_features: int = -1,
+        features_remove_coeff: float = 1.5,
     ) -> None:
         self.data_splits = data_splits
         self.metric = metric
@@ -45,6 +47,8 @@ class Graph:
         self.start_wrappers = start_wrappers
         self.level_cutoff_threshold = level_cutoff_threshold
         self.keep_features = keep_features
+        self.max_features = max_features
+        self.features_remove_coeff = features_remove_coeff
 
         self.root_node = GraphNode(
             feature_list=list(data_splits["X_train"].columns),
@@ -139,7 +143,7 @@ class Graph:
                 self.cached_performance,
                 method,
                 self.keep_features,
-                max_features=7,
+                max_features=self.max_features,
             )
 
             future_params = []

@@ -95,6 +95,8 @@ class FeatureSelector:
         seed: int = None,
         max_console_width: int = 110,
         keep_features: list[str] = [],
+        max_features: int = -1,
+        features_remove_coeff: float = 1.5,
     ) -> list[MethodResult]:
         """
         Selects the best features using filter and wrapper methods and evaluates
@@ -203,6 +205,8 @@ class FeatureSelector:
                 start_wrappers=start_wrappers,
                 level_cutoff_threshold=level_cutoff_threshold,
                 keep_features=keep_features,
+                max_features=max_features,
+                features_remove_coeff=features_remove_coeff,
             )
 
             return [MethodResult(node) for node in graph._get_best_results(n_results)]
