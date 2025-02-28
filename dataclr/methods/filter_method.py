@@ -170,6 +170,8 @@ class FilterMethod(Method, ABC):
         # max_features = 9
         if max_features == -1:
             max_features = len(filtered_list)
+        else:
+            max_features -= 1
 
         k = trial.suggest_int(
             "k",

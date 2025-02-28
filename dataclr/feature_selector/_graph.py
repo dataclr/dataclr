@@ -139,6 +139,7 @@ class Graph:
                 self.cached_performance,
                 method,
                 self.keep_features,
+                max_features=7,
             )
 
             future_params = []
