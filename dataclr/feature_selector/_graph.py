@@ -134,6 +134,10 @@ class Graph:
             if self.verbose:
                 self.cur_methods.append(method.__class__.__name__)
 
+            max_features_for_this_level = round(
+                self.max_features
+                * pow(self.features_remove_coeff, self.max_depth - depth)
+            )
             new_method_set = future_methods - {method}
             new_node = GraphNode(node.feature_list, new_method_set, method)
 
@@ -143,7 +147,7 @@ class Graph:
                 self.cached_performance,
                 method,
                 self.keep_features,
-                max_features=self.max_features,
+                max_features=max_features_for_this_level,
             )
 
             future_params = []
@@ -345,6 +349,11 @@ class Graph:
         start_time = time.perf_counter()
         self._search_feature_sets()
         duration = time.perf_counter() - start_time
+
+        if self.max_features != -1:
+            for result in self.best_results:
+                if len(result.feature_list) > self.max_features:
+                    self.best_results.remove(result)
 
         if self.verbose:
             if self.best_results_history:
