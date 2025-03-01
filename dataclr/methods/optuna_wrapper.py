@@ -157,6 +157,8 @@ class OptunaMethod(WrapperMethod):
         if max_features == -1:
             max_features = len(data_splits["X_train"].columns.tolist())
 
+        number_to_select = max_features - len(keep_features)
+
         feature_names_in_order = data_splits["X_train"].columns.tolist()
 
         keep_feature_indexes = [
@@ -165,14 +167,18 @@ class OptunaMethod(WrapperMethod):
             if f in feature_names_in_order
         ]
 
-        feature_mask = [
-            (
-                1
-                if i in keep_feature_indexes
-                else trial.suggest_categorical(f"feature_{i}", [0, 1])
-            )
-            for i in range(data_splits["X_train"].shape[1])
-        ]
+        feature_mask = []
+        for i in range(data_splits["X_train"].shape[1]):
+            if i in keep_feature_indexes:
+                feature_mask.append(1)
+            else:
+                if number_to_select > 0:
+                    res = trial.suggest_categorical(f"feature_{i}", [0, 1])
+                    feature_mask.append(res)
+                    if res == 1:
+                        number_to_select -= 1
+                else:
+                    feature_mask.append(0)
 
         selected_features_indexes = [
             i for i, use in enumerate(feature_mask) if use == 1
