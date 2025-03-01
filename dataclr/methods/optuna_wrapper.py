@@ -153,6 +153,10 @@ class OptunaMethod(WrapperMethod):
         keep_features: list[str] = [],
         max_features: int = -1,
     ) -> float:
+
+        if max_features == -1:
+            max_features = len(data_splits["X_train"].columns.tolist())
+
         feature_names_in_order = data_splits["X_train"].columns.tolist()
 
         keep_feature_indexes = [
@@ -169,6 +173,7 @@ class OptunaMethod(WrapperMethod):
             )
             for i in range(data_splits["X_train"].shape[1])
         ]
+
         selected_features_indexes = [
             i for i, use in enumerate(feature_mask) if use == 1
         ]
