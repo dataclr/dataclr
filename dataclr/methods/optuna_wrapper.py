@@ -44,7 +44,7 @@ class OptunaMethod(WrapperMethod):
         seed: int = 42,
     ):
         super().__init__(model, metric, n_results, seed)
-        self.n_trials = None
+        self.n_trials = n_trials
 
     def fit(
         self, X_train: pd.DataFrame, y_train: pd.Series = pd.Series()
