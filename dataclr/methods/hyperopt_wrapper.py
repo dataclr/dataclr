@@ -97,6 +97,7 @@ class HyperoptMethod(WrapperMethod):
         keep_features: list[str] = [],
         max_features: int = -1,
     ) -> list[Result]:
+
         if self.n_trials is None:
             self.n_trials = len(data_splits["X_train"].columns) * 10
         trials = Trials()
@@ -117,7 +118,11 @@ class HyperoptMethod(WrapperMethod):
 
         fmin(
             fn=lambda params: self._objective(
-                params, data_splits, cached_performance, max_features=max_features
+                params,
+                data_splits,
+                cached_performance,
+                keep_feature_indexes=keep_feature_indexes,
+                max_features=max_features,
             ),
             space=space,
             algo=tpe.suggest,
@@ -137,10 +142,27 @@ class HyperoptMethod(WrapperMethod):
         params,
         data_splits: DataSplits,
         cached_performance: dict[int, ResultPerformance],
+        keep_feature_indexes,
         max_features: int = -1,
     ) -> float:
-        cols = [i for i, j in params.items() if j == 1]
-        feature_indices = [int(name.split("_")[1]) for name in cols]
+        if max_features == -1:
+            max_features = len(data_splits["X_train"].columns)
+
+        feature_mask = []
+        number_to_select = max_features - len(keep_feature_indexes)
+        for i in range(data_splits["X_train"].shape[1]):
+            if i in keep_feature_indexes:
+                feature_mask.append(1)
+            else:
+                res = params[f"feature_{i}"]
+                if number_to_select > 0:
+                    feature_mask.append(res)
+                    if res == 1:
+                        number_to_select -= 1
+                else:
+                    feature_mask.append(0)
+
+        feature_indices = [i for i, j in enumerate(feature_mask) if j == 1]
         selected_features = data_splits["X_train"].columns[feature_indices]
 
         if len(selected_features) == 0:
