@@ -81,7 +81,7 @@ class OptunaMethod(WrapperMethod):
             y_train (pd.Series): Training target variable.
             y_test (pd.Series): Testing target variable.
             max_features (int): Number of max features count in results.
-                Default to -1 (all features number).
+                Defaults to -1 (all features number).
 
         Returns:
             list[Result]: A list of results containing feature subsets and their
