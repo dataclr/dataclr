@@ -138,8 +138,14 @@ class FeatureSelector:
                 utilize all available processors. Defaults to -1.
             max_console_width (int): The maximum width of the console output
                 for UI display purposes. Defaults to 110.
-            keep_features (list[str])): List of features not to be dropped. Defaults to
+            keep_features (list[str]): List of features not to be dropped. Defaults to
                 empty.
+            max_features (int): Number of max features list in end results. Defaults to
+                -1 (all features number).
+            features_remove_coeff (float): Coefficient that will be used to determine
+                how much features can be o result on specified level. The exact formula
+                is max_features*(features_remove_coeff)^(remaining_levels_count). Defaults to
+                1.5.
 
         Returns:
             list[:class:`~dataclr.results.MethodResult`]: A list of the best results

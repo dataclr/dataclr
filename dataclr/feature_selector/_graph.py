@@ -138,6 +138,8 @@ class Graph:
                 self.max_features
                 * pow(self.features_remove_coeff, self.max_depth - depth)
             )
+            if self.max_features == -1:
+                max_features_for_this_level = -1
             new_method_set = future_methods - {method}
             new_node = GraphNode(node.feature_list, new_method_set, method)
 
