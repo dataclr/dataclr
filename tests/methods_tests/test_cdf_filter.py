@@ -74,6 +74,30 @@ def test_result_performance(generate_dataset, dataset, model, metric, metrics):
             assert r.performance[metric] is not None
 
 
+@pytest.mark.parametrize(
+    "dataset, model, metric",
+    [
+        (make_regression, LinearRegression(), "rmse"),
+        (make_classification, LogisticRegression(solver="liblinear"), "accuracy"),
+    ],
+)
+def test_results_features_count(generate_dataset, dataset, model, metric):
+    max_features = 3
+    X_train, X_test, y_train, y_test = generate_dataset(dataset)
+    cfd = CumulativeDistributionFunction(
+        model=model, metric=metric, n_results=3, seed=42
+    )
+    results = cfd.fit_transform(
+        X_train, X_test, y_train, y_test, max_features=max_features
+    )
+
+    assert isinstance(results, list)
+    assert len(results) <= 3
+    assert all(isinstance(r, Result) for r in results)
+    for result in results:
+        assert len(result.feature_list) <= max_features
+
+
 def test_empty_dataset():
     cfd = CumulativeDistributionFunction(
         model=LinearRegression(), metric="rmse", n_results=3, seed=42
