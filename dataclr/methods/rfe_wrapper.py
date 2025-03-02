@@ -12,6 +12,19 @@ from dataclr.results import Result, ResultPerformance
 
 
 class RecursiveFeatureElimination(WrapperMethod):
+    """
+    Recursive Feature Elimination (RFE) feature selection method.
+
+    This method iteratively removes the least important feature and evaluates the model's
+    performance to determine the optimal subset of features.
+
+    Inherits from:
+        :class:`WrapperMethod`: The base class for wrapper-based feature selection methods.
+
+    Attributes:
+        result_list (list[Result]): Stores feature selection results during the process.
+    """
+
     def __init__(self, model, metric: Metric, n_results: int = 3, seed: int = 42):
         super().__init__(model, metric, n_results, seed)
         self.result_list: list[Result] = []
@@ -19,6 +32,16 @@ class RecursiveFeatureElimination(WrapperMethod):
     def fit(
         self, X_train: pd.DataFrame = pd.DataFrame(), y_train: pd.Series = pd.Series()
     ) -> RecursiveFeatureElimination:
+        """
+        Fits the model.
+
+        Args:
+            X_train (pd.DataFrame): Training feature matrix.
+            y_train (pd.Series): Training target variable.
+
+        Returns:
+            RecursiveFeatureElimination: Returns self.
+        """
         return self
 
     def transform(
@@ -29,6 +52,20 @@ class RecursiveFeatureElimination(WrapperMethod):
         y_test: pd.Series,
         max_features: int = -1,
     ) -> list[Result]:
+        """
+        Performs Recursive Feature Elimination and selects the optimal subset of features.
+
+        Args:
+            X_train (pd.DataFrame): Training feature matrix.
+            X_test (pd.DataFrame): Testing feature matrix.
+            y_train (pd.Series): Training target variable.
+            y_test (pd.Series): Testing target variable.
+            max_features (int): Number of max features count in results.
+                Defaults to -1 (all features number).
+
+        Returns:
+            list[Result]: A list of feature subsets and their corresponding performance metrics.
+        """
         data_splits: DataSplits = {
             "X_train": X_train,
             "y_train": y_train,
@@ -45,6 +82,9 @@ class RecursiveFeatureElimination(WrapperMethod):
         keep_features: list[str] = [],
         max_features: int = -1,
     ) -> list[Result]:
+        """
+        Performs Recursive Feature Elimination and selects the optimal subset of features.
+        """
         selected_features = list(data_splits["X_train"].columns)
         remaining_features = list(data_splits["X_train"].columns)
 
@@ -96,6 +136,9 @@ class RecursiveFeatureElimination(WrapperMethod):
         data_splits: DataSplits,
         cached_performance: dict[int, ResultPerformance],
     ) -> ResultPerformance:
+        """
+        Evaluates a given set of features using the model.
+        """
         features_key = hash(tuple(features))
         if features_key in cached_performance:
             return cached_performance[features_key]
@@ -114,6 +157,9 @@ class RecursiveFeatureElimination(WrapperMethod):
     def _compare(
         self, performance1: ResultPerformance, performance2: ResultPerformance
     ) -> bool:
+        """
+        Compares two performance results based on the evaluation metric.
+        """
         reverse = is_maximizing_metric(self.metric)
         tolerance = 1e-9
 
@@ -126,6 +172,9 @@ class RecursiveFeatureElimination(WrapperMethod):
     def _get_n_best_params(
         self, results: list[Result], base_result: ResultPerformance
     ) -> list[Result]:
+        """
+        Selects the top N best-performing feature subsets.
+        """
         if not results:
             return []
 
