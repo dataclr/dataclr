@@ -44,7 +44,7 @@ class OptunaMethod(WrapperMethod):
         seed: int = 42,
     ):
         super().__init__(model, metric, n_results, seed)
-        self.n_trials = None
+        self.n_trials = n_trials
 
     def fit(
         self, X_train: pd.DataFrame, y_train: pd.Series = pd.Series()
@@ -69,6 +69,7 @@ class OptunaMethod(WrapperMethod):
         X_test: pd.DataFrame,
         y_train: pd.Series,
         y_test: pd.Series,
+        max_features: int = -1,
     ) -> list[Result]:
         """
         Applies the feature selection process by evaluating subsets using Optuna
@@ -79,6 +80,8 @@ class OptunaMethod(WrapperMethod):
             X_test (pd.DataFrame): Testing feature matrix.
             y_train (pd.Series): Training target variable.
             y_test (pd.Series): Testing target variable.
+            max_features (int): Number of max features count in results.
+                Defaults to -1 (all features number).
 
         Returns:
             list[Result]: A list of results containing feature subsets and their
@@ -91,18 +94,20 @@ class OptunaMethod(WrapperMethod):
             "y_test": y_test,
         }
 
-        return self._get_results(data_splits, {})
+        return self._get_results(data_splits, {}, max_features=max_features)
 
     def _get_results(
         self,
         data_splits: DataSplits,
         cached_performance: dict[int, ResultPerformance],
         keep_features: list[str] = [],
+        max_features: int = -1,
     ) -> list[Result]:
         return self._optimize(
             data_splits=data_splits,
             cached_performance=cached_performance,
             keep_features=keep_features,
+            max_features=max_features,
         )
 
     def _optimize(
@@ -110,6 +115,7 @@ class OptunaMethod(WrapperMethod):
         data_splits: DataSplits,
         cached_performance: dict[int, ResultPerformance],
         keep_features: list[str] = [],
+        max_features: int = -1,
     ) -> list[Result]:
         if self.n_trials is None:
             self.n_trials = len(data_splits["X_train"].columns) * 10
@@ -129,6 +135,7 @@ class OptunaMethod(WrapperMethod):
             data_splits=data_splits,
             cached_performance=cached_performance,
             keep_features=keep_features,
+            max_features=max_features,
         )
         study.optimize(objective_with_params, n_trials=self.n_trials)
 
@@ -146,7 +153,14 @@ class OptunaMethod(WrapperMethod):
         data_splits: DataSplits,
         cached_performance: dict[int, ResultPerformance],
         keep_features: list[str] = [],
+        max_features: int = -1,
     ) -> float:
+
+        if max_features == -1:
+            max_features = len(data_splits["X_train"].columns.tolist())
+
+        number_to_select = max_features - len(keep_features)
+
         feature_names_in_order = data_splits["X_train"].columns.tolist()
 
         keep_feature_indexes = [
@@ -155,14 +169,19 @@ class OptunaMethod(WrapperMethod):
             if f in feature_names_in_order
         ]
 
-        feature_mask = [
-            (
-                1
-                if i in keep_feature_indexes
-                else trial.suggest_categorical(f"feature_{i}", [0, 1])
-            )
-            for i in range(data_splits["X_train"].shape[1])
-        ]
+        feature_mask = []
+        for i in range(data_splits["X_train"].shape[1]):
+            if i in keep_feature_indexes:
+                feature_mask.append(1)
+            else:
+                if number_to_select > 0:
+                    res = trial.suggest_categorical(f"feature_{i}", [0, 1])
+                    feature_mask.append(res)
+                    if res == 1:
+                        number_to_select -= 1
+                else:
+                    feature_mask.append(0)
+
         selected_features_indexes = [
             i for i, use in enumerate(feature_mask) if use == 1
         ]

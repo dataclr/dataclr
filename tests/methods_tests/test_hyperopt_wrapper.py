@@ -32,6 +32,32 @@ def test_results_list(generate_dataset, dataset, model, metric):
 
 
 @pytest.mark.parametrize(
+    "dataset, model, metric",
+    [
+        (make_regression, RandomForestRegressor(max_depth=10, n_estimators=10), "rmse"),
+        (
+            make_classification,
+            RandomForestClassifier(max_depth=10, n_estimators=10),
+            "accuracy",
+        ),
+    ],
+)
+def test_results_features_count(generate_dataset, dataset, model, metric):
+    max_features = 3
+    X_train, X_test, y_train, y_test = generate_dataset(dataset)
+    hyperopt = HyperoptMethod(model=model, metric=metric, n_results=3, seed=42)
+    results = hyperopt.fit_transform(
+        X_train, X_test, y_train, y_test, max_features=max_features
+    )
+
+    assert isinstance(results, list)
+    assert len(results) <= 3
+    assert all(isinstance(r, Result) for r in results)
+    for result in results:
+        assert len(result.feature_list) <= max_features
+
+
+@pytest.mark.parametrize(
     "dataset, model, metric, metrics",
     [
         (

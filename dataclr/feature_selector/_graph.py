@@ -32,6 +32,8 @@ class Graph:
         start_wrappers: bool = True,
         level_cutoff_threshold: int = 300,
         keep_features: list[str] = [],
+        max_features: int = -1,
+        features_remove_coeff: float = 1.5,
     ) -> None:
         self.data_splits = data_splits
         self.metric = metric
@@ -45,6 +47,8 @@ class Graph:
         self.start_wrappers = start_wrappers
         self.level_cutoff_threshold = level_cutoff_threshold
         self.keep_features = keep_features
+        self.max_features = max_features
+        self.features_remove_coeff = features_remove_coeff
 
         self.root_node = GraphNode(
             feature_list=list(data_splits["X_train"].columns),
@@ -130,6 +134,12 @@ class Graph:
             if self.verbose:
                 self.cur_methods.append(method.__class__.__name__)
 
+            max_features_for_this_level = round(
+                self.max_features
+                * pow(self.features_remove_coeff, self.max_depth - depth)
+            )
+            if self.max_features == -1:
+                max_features_for_this_level = -1
             new_method_set = future_methods - {method}
             new_node = GraphNode(node.feature_list, new_method_set, method)
 
@@ -139,6 +149,7 @@ class Graph:
                 self.cached_performance,
                 method,
                 self.keep_features,
+                max_features=max_features_for_this_level,
             )
 
             future_params = []
@@ -340,6 +351,13 @@ class Graph:
         start_time = time.perf_counter()
         self._search_feature_sets()
         duration = time.perf_counter() - start_time
+
+        if self.max_features != -1:
+            new_best_results_list = []
+            for result in self.best_results:
+                if len(result.feature_list) <= self.max_features:
+                    new_best_results_list.append(result)
+            self.best_results = new_best_results_list
 
         if self.verbose:
             if self.best_results_history:

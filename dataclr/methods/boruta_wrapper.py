@@ -57,6 +57,7 @@ class BorutaMethod(WrapperMethod):
         X_test: pd.DataFrame,
         y_train: pd.Series,
         y_test: pd.Series,
+        max_features: int = -1,
     ) -> list[Result]:
         """
         Transforms the dataset by selecting the top-ranked features.
@@ -66,6 +67,8 @@ class BorutaMethod(WrapperMethod):
             X_test (pd.DataFrame): Testing feature matrix.
             y_train (pd.Series): Training target variable.
             y_test (pd.Series): Testing target variable.
+            max_features (int): Number of max features count in results.
+                Defaults to -1 (all features number).
 
         Returns:
             list[Result]: List of results for the selected features.
@@ -87,6 +90,7 @@ class BorutaMethod(WrapperMethod):
             data_splits=data_splits,
             sorted_list=self.ranked_features_,
             cached_performance={},
+            max_features=max_features,
         )
 
     def _get_results(
@@ -94,6 +98,7 @@ class BorutaMethod(WrapperMethod):
         data_splits: DataSplits,
         cached_performance: dict[int, ResultPerformance],
         keep_features: list[str] = [],
+        max_features: int = -1,
     ) -> list[Result]:
         try:
             self.fit(data_splits["X_train"], data_splits["y_train"])
@@ -105,6 +110,7 @@ class BorutaMethod(WrapperMethod):
             sorted_list=self.ranked_features_,
             cached_performance=cached_performance,
             keep_features=keep_features,
+            max_features=max_features,
         )
 
     def _get_boruta_series(self, X_train: pd.DataFrame, y_train: pd.Series):

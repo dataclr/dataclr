@@ -47,6 +47,7 @@ class Method(ABC):
         X_test: pd.DataFrame,
         y_train: pd.Series,
         y_test: pd.Series,
+        max_features: int = -1,
     ) -> list[Result]:
         """
         Fits the model using the training data and returns results based on the model.
@@ -72,7 +73,9 @@ class Method(ABC):
         except ValueError:
             return []
 
-        return self.transform(X_train, X_test, y_train, y_test)
+        return self.transform(
+            X_train, X_test, y_train, y_test, max_features=max_features
+        )
 
     def fit(
         self,
@@ -105,6 +108,7 @@ class Method(ABC):
         X_test: pd.DataFrame,
         y_train: pd.Series,
         y_test: pd.Series,
+        max_features: int = -1,
     ) -> list[Result]:
         """
         Returns results based on the fitted model.
@@ -132,5 +136,6 @@ class Method(ABC):
         data_splits: DataSplits,
         cached_performance: dict[str, ResultPerformance],
         keep_features: list[str] = [],
+        max_features: int = -1,
     ) -> list[Result]:
         pass
