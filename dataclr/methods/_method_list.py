@@ -19,6 +19,7 @@ from dataclr.methods.shap_wrapper import ShapMethod
 from dataclr.methods.skewness_filter import Skewness
 from dataclr.methods.spearman_correlation_filter import SpearmanCorrelation
 from dataclr.methods.variance_threshold_filter import VarianceThreshold
+from dataclr.methods.vif_filter import VarianceInflationFactor
 from dataclr.methods.z_score_filter import ZScore
 
 filter_classes = [
@@ -40,10 +41,32 @@ filter_classes = [
     SpearmanCorrelation,
     VarianceThreshold,
     ZScore,
+    VarianceInflationFactor,
 ]
 
 fast_filter_classes = [
     ANOVA,
+    CumulativeDistributionFunction,
+    Chi2,
+    CohensD,
+    CramersV,
+    DistanceCorrelation,
+    KendallCorrelation,
+    Kurtosis,
+    LinearCorrelation,
+    MeanAbsoluteDeviation,
+    MaximalInformationCoefficient,
+    MutualInformation,
+    Skewness,
+    SpearmanCorrelation,
+    VarianceThreshold,
+    ZScore,
+    VarianceInflationFactor,
+]
+
+super_fast_filter_classes = [
+    ANOVA,
+    CumulativeDistributionFunction,
     Chi2,
     CohensD,
     CramersV,

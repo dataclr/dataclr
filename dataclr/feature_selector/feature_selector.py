@@ -14,6 +14,7 @@ from dataclr.methods import FilterMethod, WrapperMethod
 from dataclr.methods._method_list import (
     fast_filter_classes,
     filter_classes,
+    super_fast_filter_classes,
     wrapper_classes,
 )
 from dataclr.methods.method import DataSplits
@@ -151,9 +152,12 @@ class FeatureSelector:
                 how much features can be o result on specified level. The exact formula
                 is max_features*(features_remove_coeff)^(remaining_levels_count). Defaults to
                 1.5.
-            features_remove_coeff (float): Determine how time consumption methods will be
-                used in feature selection. Possible values: 'fast','normal'. Defaults to
-                'normal'.
+            mode (str): Determines how time-consuming methods will be used in feature selection.
+                Possible values: 'normal', 'fast', 'super_fast'.
+                'normal' is the best choice for datasets with up to a few hundred features.
+                'fast' is suitable for datasets with fewer than a thousand features.
+                'super_fast' is scalable for datasets with more than a few thousand features.
+                Defaults to 'normal'.
 
         Returns:
             list[:class:`~dataclr.results.MethodResult`]: A list of the best results
@@ -175,6 +179,8 @@ class FeatureSelector:
             if filter_methods is None:
                 if mode == "fast":
                     filter_methods = fast_filter_classes
+                elif mode == "super_fast":
+                    filter_methods = super_fast_filter_classes
                 elif mode == "normal":
                     filter_methods = filter_classes
                 else:
