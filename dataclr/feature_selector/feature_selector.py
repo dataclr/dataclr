@@ -11,7 +11,11 @@ from dataclr._console_ui import console_ui
 from dataclr._evaluate import train_eval
 from dataclr.feature_selector._graph import Graph
 from dataclr.methods import FilterMethod, WrapperMethod
-from dataclr.methods._method_list import filter_classes, wrapper_classes
+from dataclr.methods._method_list import (
+    fast_filter_classes,
+    filter_classes,
+    wrapper_classes,
+)
 from dataclr.methods.method import DataSplits
 from dataclr.metrics import Metric
 from dataclr.models import BaseModel
@@ -97,6 +101,7 @@ class FeatureSelector:
         keep_features: list[str] = [],
         max_features: int = -1,
         features_remove_coeff: float = 1.5,
+        mode: str = "normal",
     ) -> list[MethodResult]:
         """
         Selects the best features using filter and wrapper methods and evaluates
@@ -146,6 +151,9 @@ class FeatureSelector:
                 how much features can be o result on specified level. The exact formula
                 is max_features*(features_remove_coeff)^(remaining_levels_count). Defaults to
                 1.5.
+            features_remove_coeff (float): Determine how time consumption methods will be
+                used in feature selection. Possible values: 'fast','normal'. Defaults to
+                'normal'.
 
         Returns:
             list[:class:`~dataclr.results.MethodResult`]: A list of the best results
@@ -165,7 +173,13 @@ class FeatureSelector:
                     return []
 
             if filter_methods is None:
-                filter_methods = filter_classes
+                if mode == "fast":
+                    filter_methods = fast_filter_classes
+                elif mode == "normal":
+                    filter_methods = filter_classes
+                else:
+                    filter_methods = filter_classes
+
             if wrapper_methods is None:
                 wrapper_methods = wrapper_classes
 

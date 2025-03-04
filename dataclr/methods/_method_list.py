@@ -42,4 +42,22 @@ filter_classes = [
     ZScore,
 ]
 
+fast_filter_classes = [
+    ANOVA,
+    Chi2,
+    CohensD,
+    CramersV,
+    DistanceCorrelation,
+    KendallCorrelation,
+    Kurtosis,
+    LinearCorrelation,
+    MeanAbsoluteDeviation,
+    MaximalInformationCoefficient,
+    MutualInformation,
+    Skewness,
+    SpearmanCorrelation,
+    VarianceThreshold,
+    ZScore,
+]
+
 wrapper_classes = [HyperoptMethod, OptunaMethod, BorutaMethod, ShapMethod]
