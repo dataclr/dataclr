@@ -52,36 +52,43 @@ class DataclrFilter(FilterMethod):
         spearman_method.fit(X_train, y_train)
         spearman_series = spearman_method.ranked_features_
 
-        mi_series_normalized = (
-            (mi_series - mi_series.min()) / (mi_series.max() - mi_series.min())
-            if mi_series.any()
-            else mi_series
-        )
-        corr_series_normalized = (
-            (corr_series - corr_series.min()) / (corr_series.max() - corr_series.min())
-            if corr_series.any()
-            else corr_series
-        )
-        anova_series_normalized = (
-            (anova_series - anova_series.min())
-            / (anova_series.max() - anova_series.min())
-            if anova_series.any()
-            else anova_series
-        )
-        spearman_series_normalized = (
-            (spearman_series - spearman_series.min())
-            / (spearman_series.max() - spearman_series.min())
-            if spearman_series.any()
-            else spearman_series
-        )
+        # mi_series_normalized = (
+        #     (mi_series - mi_series.min()) / (mi_series.max() - mi_series.min())
+        #     if mi_series.any()
+        #     else mi_series
+        # )
+        # corr_series_normalized = (
+        #     (corr_series - corr_series.min()) / (corr_series.max() - corr_series.min())
+        #     if corr_series.any()
+        #     else corr_series
+        # )
+        # anova_series_normalized = (
+        #     (anova_series - anova_series.min())
+        #     / (anova_series.max() - anova_series.min())
+        #     if anova_series.any()
+        #     else anova_series
+        # )
+        # spearman_series_normalized = (
+        #     (spearman_series - spearman_series.min())
+        #     / (spearman_series.max() - spearman_series.min())
+        #     if spearman_series.any()
+        #     else spearman_series
+        # )
 
-        combined_scores = (
-            0.5 * mi_series_normalized
-            + 0.1 * corr_series_normalized
-            + 0.3 * anova_series_normalized
-            + 0.1 * spearman_series_normalized
-        )
+        # combined_scores = (
+        #     0.5 * mi_series_normalized
+        #     + 0.1 * corr_series_normalized
+        #     + 0.3 * anova_series_normalized
+        #     + 0.1 * spearman_series_normalized
+        # )
 
-        self.ranked_features_ = combined_scores.sort_values()
+        mi_ranks = mi_series.rank(method="min")
+        corr_ranks = corr_series.rank(method="min")
+        anova_ranks = anova_series.rank(method="min")
+        spearman_ranks = spearman_series.rank(method="min")
+
+        combined_ranks = (mi_ranks + corr_ranks + anova_ranks + spearman_ranks) / 4
+
+        self.ranked_features_ = combined_ranks.sort_values()
 
         return self

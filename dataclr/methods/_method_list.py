@@ -4,6 +4,7 @@ from dataclr.methods.cdf_filter import CumulativeDistributionFunction
 from dataclr.methods.chi2_filter import Chi2
 from dataclr.methods.cohens_d_filter import CohensD
 from dataclr.methods.cramers_v_filter import CramersV
+from dataclr.methods.dataclr_filter import DataclrFilter
 from dataclr.methods.distance_correlation_filter import DistanceCorrelation
 from dataclr.methods.entropy_filter import Entropy
 from dataclr.methods.hyperopt_wrapper import HyperoptMethod
@@ -42,6 +43,7 @@ filter_classes = [
     VarianceThreshold,
     ZScore,
     VarianceInflationFactor,
+    DataclrFilter,
 ]
 
 fast_filter_classes = [
