@@ -13,9 +13,9 @@ from dataclr.results import Result, ResultPerformance
 
 class RecursiveFeatureAddition(WrapperMethod):
     """
-    Recursive Feature Elimination (RFE) feature selection method.
+    Recursive Feature Addition (RFA) feature selection method.
 
-    This method iteratively removes the least important feature and evaluates the model's
+    This method iteratively adds the most important feature and evaluates the model's
     performance to determine the optimal subset of features.
 
     Inherits from:
@@ -27,7 +27,7 @@ class RecursiveFeatureAddition(WrapperMethod):
 
     def __init__(self, model, metric: Metric, n_results: int = 3, seed: int = 42):
         """
-        Initializes the Recursive Feature Elimination method.
+        Initializes the Recursive Feature Addition method.
 
         Args:
             model: The machine learning model used for evaluation.
@@ -49,7 +49,7 @@ class RecursiveFeatureAddition(WrapperMethod):
             y_train (pd.Series): Training target variable.
 
         Returns:
-            RecursiveFeatureElimination: Returns self.
+            RecursiveFeatureAddition: Returns self.
         """
         return self
 
@@ -62,7 +62,7 @@ class RecursiveFeatureAddition(WrapperMethod):
         max_features: int = -1,
     ) -> list[Result]:
         """
-        Performs Recursive Feature Elimination and selects the optimal subset of features.
+        Performs Recursive Feature Addition and selects the optimal subset of features.
 
         Args:
             X_train (pd.DataFrame): Training feature matrix.
@@ -92,7 +92,7 @@ class RecursiveFeatureAddition(WrapperMethod):
         max_features: int = -1,
     ) -> list[Result]:
         """
-        Performs Recursive Feature Elimination and selects the optimal subset of features.
+        Performs Recursive Feature Addition and selects the optimal subset of features.
 
         Args:
             X_train (pd.DataFrame): Training feature matrix.
