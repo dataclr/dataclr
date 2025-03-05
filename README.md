@@ -44,12 +44,14 @@ _dataclr_ is a Python library for feature selection, enabling data scientists an
 
   - **Wrapper Methods**: Model-based iterative methods like `BorutaMethod`, `ShapMethod`, and `OptunaMethod`.
 
-    | Method           | Regression | Classification |
-    | ---------------- | ---------- | -------------- |
-    | `BorutaMethod`   | Yes        | Yes            |
-    | `HyperoptMethod` | Yes        | Yes            |
-    | `OptunaMethod`   | Yes        | Yes            |
-    | `ShapMethod`     | Yes        | Yes            |
+    | Method                           | Regression | Classification |
+    | -------------------------------- | ---------- | -------------- |
+    | `BorutaMethod`                   | Yes        | Yes            |
+    | `HyperoptMethod`                 | Yes        | Yes            |
+    | `OptunaMethod`                   | Yes        | Yes            |
+    | `ShapMethod`                     | Yes        | Yes            |
+    | `Recursive Feature Elimination`  | Yes        | Yes            |
+    | `Recursive Feature Addition`     | Yes        | Yes            |
 
 - **Flexible and Scalable**:
 
