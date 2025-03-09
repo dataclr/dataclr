@@ -272,8 +272,7 @@ class FilterMethod(Method, ABC):
             params = best_trial.params
 
             performance_metrics = {
-                key: best_trial.user_attrs.get(key)
-                for key in ["r2", "rmse", "accuracy", "precision", "recall", "f1"]
+                key: best_trial.user_attrs.get(key) for key in list(Metric.__args__)
             }
             feature_list = base_features[params["k"] :]
             feature_list.extend(keep_features)
