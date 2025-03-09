@@ -51,10 +51,6 @@ def train_eval(
                 recall_score(y_test, y_pred, average=average, zero_division=0)
             ),
             "f1": float(f1_score(y_test, y_pred, average=average, zero_division=0)),
-            "average_precision": float(
-                average_precision_score(
-                    y_test, y_pred, average=average, zero_division=0
-                )
-            ),
+            "average_precision": float(average_precision_score(y_test, y_pred)),
         }
         return ClassificationPerformance(**metrics)
