@@ -279,7 +279,9 @@ class FilterMethod(Method, ABC):
             best_params.append(
                 Result(
                     params=params,
-                    performance=ResultPerformance(**performance_metrics),
+                    performance=ResultPerformance(
+                        **performance_metrics, used_metric=self.metric
+                    ),
                     feature_list=feature_list,
                 )
             )

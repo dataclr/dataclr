@@ -63,6 +63,11 @@ class ResultPerformance:
 
     def __str__(self) -> str:
         metrics = []
+        if self.used_metric is not None:
+            used_value = getattr(self, self.used_metric, None)
+            metrics.append(
+                f"Optimalization metric({self.used_metric}): {used_value:.4f}"
+            )
         if self.rmse is not None:
             metrics.append(f"RMSE: {self.rmse:.4f}")
         if self.r2 is not None:
@@ -75,12 +80,6 @@ class ResultPerformance:
             metrics.append(f"Recall: {self.recall:.4f}")
         if self.f1 is not None:
             metrics.append(f"F1: {self.f1:.4f}")
-        if self.used_metric is not None:
-            metrics = [
-                f"*{metric}*" if self.used_metric.lower() in metric.lower() else metric
-                for metric in metrics
-            ]
-            metrics.append(f"Used metric: {self.used_metric}")
         return " | ".join(metrics)
 
     def __eq__(self, other) -> bool:
