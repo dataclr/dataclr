@@ -1,3 +1,6 @@
+from dataclr.metrics.metrics import Metric
+
+
 class ResultPerformance:
     """
     Represents the performance metrics of a model or result.
@@ -18,6 +21,7 @@ class ResultPerformance:
         f1 (float): F1 score.
         average_precision (float): Average precision score.
         matthews_corrcoef (float): Matthews corrcoef.
+        used_metric (Metrics): Metrics used during training. Defaults to None.
     """
 
     def __init__(
@@ -30,6 +34,7 @@ class ResultPerformance:
         f1: float = None,
         average_precision: float = None,
         matthews_corrcoef: float = None,
+        used_metric: Metric = None,
     ) -> None:
         self.rmse = rmse
         self.r2 = r2
@@ -39,6 +44,7 @@ class ResultPerformance:
         self.f1 = f1
         self.average_precision = average_precision
         self.matthews_corrcoef = matthews_corrcoef
+        self.used_metric = used_metric
 
     def __getitem__(self, key: str) -> float:
         attributes = {
@@ -69,10 +75,12 @@ class ResultPerformance:
             metrics.append(f"Recall: {self.recall:.4f}")
         if self.f1 is not None:
             metrics.append(f"F1: {self.f1:.4f}")
-        if self.average_precision is not None:
-            metrics.append(f"Average precision: {self.average_precision:.4f}")
-        if self.matthews_corrcoef is not None:
-            metrics.append(f"Matthews corrcoeff: {self.matthews_corrcoef:.4f}")
+        if self.used_metric is not None:
+            metrics = [
+                f"*{metric}*" if self.used_metric.lower() in metric.lower() else metric
+                for metric in metrics
+            ]
+            metrics.append(f"Used metric: {self.used_metric}")
         return " | ".join(metrics)
 
     def __eq__(self, other) -> bool:
@@ -130,6 +138,7 @@ class ClassificationPerformance(ResultPerformance):
         f1: float,
         average_precision: float,
         matthews_corrcoef: float,
+        used_metric: Metric = None,
     ) -> None:
         super().__init__(
             accuracy=accuracy,
@@ -138,4 +147,5 @@ class ClassificationPerformance(ResultPerformance):
             f1=f1,
             average_precision=average_precision,
             matthews_corrcoef=matthews_corrcoef,
+            used_metric=used_metric,
         )

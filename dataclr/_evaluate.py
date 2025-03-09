@@ -29,6 +29,7 @@ def train_eval(
             f1=-float("inf"),
             average_precision=-float("inf"),
             matthews_corrcoef=-float("inf"),
+            used_metric=metric,
         )
 
     model.fit(data_splits["X_train"], data_splits["y_train"])
