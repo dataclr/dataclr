@@ -26,6 +26,7 @@ class ResultPerformance:
         precision: float = None,
         recall: float = None,
         f1: float = None,
+        average_precision: float = None,
     ) -> None:
         self.rmse = rmse
         self.r2 = r2
@@ -33,6 +34,7 @@ class ResultPerformance:
         self.precision = precision
         self.recall = recall
         self.f1 = f1
+        self.average_precision = average_precision
 
     def __getitem__(self, key: str) -> float:
         attributes = {
@@ -42,6 +44,7 @@ class ResultPerformance:
             "precision": self.precision,
             "recall": self.recall,
             "f1": self.f1,
+            "average_precision": self.average_precision,
         }
         if key not in attributes:
             raise KeyError(f"'{key}' is not a valid performance metric.")
@@ -61,6 +64,8 @@ class ResultPerformance:
             metrics.append(f"Recall: {self.recall:.4f}")
         if self.f1 is not None:
             metrics.append(f"F1: {self.f1:.4f}")
+        if self.average_precision is not None:
+            metrics.append(f"Average precision: {self.average_precision:.4f}")
         return " | ".join(metrics)
 
     def __eq__(self, other) -> bool:
@@ -73,6 +78,7 @@ class ResultPerformance:
             and self.precision == other.precision
             and self.recall == other.recall
             and self.f1 == other.f1
+            and self.average_precision == other.average_precision
         )
 
 
@@ -107,6 +113,17 @@ class ClassificationPerformance(ResultPerformance):
     """
 
     def __init__(
-        self, accuracy: float, precision: float, recall: float, f1: float
+        self,
+        accuracy: float,
+        precision: float,
+        recall: float,
+        f1: float,
+        average_precision: float,
     ) -> None:
-        super().__init__(accuracy=accuracy, precision=precision, recall=recall, f1=f1)
+        super().__init__(
+            accuracy=accuracy,
+            precision=precision,
+            recall=recall,
+            f1=f1,
+            average_precision=average_precision,
+        )
