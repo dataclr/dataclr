@@ -1,6 +1,8 @@
 from sklearn.metrics import (
     accuracy_score,
+    average_precision_score,
     f1_score,
+    matthews_corrcoef,
     precision_score,
     r2_score,
     recall_score,
@@ -25,6 +27,9 @@ def train_eval(
             precision=-float("inf"),
             recall=-float("inf"),
             f1=-float("inf"),
+            average_precision=-float("inf"),
+            matthews_corrcoef=-float("inf"),
+            used_metric=metric,
         )
 
     model.fit(data_splits["X_train"], data_splits["y_train"])
@@ -49,5 +54,7 @@ def train_eval(
                 recall_score(y_test, y_pred, average=average, zero_division=0)
             ),
             "f1": float(f1_score(y_test, y_pred, average=average, zero_division=0)),
+            "average_precision": float(average_precision_score(y_test, y_pred)),
+            "matthews_corrcoef": float(matthews_corrcoef(y_test, y_pred)),
         }
         return ClassificationPerformance(**metrics)

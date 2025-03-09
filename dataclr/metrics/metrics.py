@@ -1,10 +1,34 @@
 from typing import Literal
 
-Metric = Literal["rmse", "r2", "accuracy", "precision", "recall", "f1"]
+Metric = Literal[
+    "rmse",
+    "r2",
+    "accuracy",
+    "precision",
+    "recall",
+    "f1",
+    "average_precision",
+    "matthews_corrcoef",
+]
 
 REGRESSION_METRICS = {"rmse", "r2"}
-CLASSIFICATION_METRICS = {"accuracy", "precision", "recall", "f1"}
-MAXIMIZE_METRICS = {"r2", "accuracy", "precision", "recall", "f1"}
+CLASSIFICATION_METRICS = {
+    "accuracy",
+    "precision",
+    "recall",
+    "f1",
+    "average_precision",
+    "matthews_corrcoef",
+}
+MAXIMIZE_METRICS = {
+    "r2",
+    "accuracy",
+    "precision",
+    "recall",
+    "f1",
+    "average_precision",
+    "matthews_corrcoef",
+}
 
 
 def is_regression(metric: Metric) -> bool:

@@ -258,8 +258,7 @@ class OptunaMethod(WrapperMethod):
             best_trial = study.trials[sorted_df.index[i]]
 
             performance_metrics = {
-                key: best_trial.user_attrs.get(key)
-                for key in ["r2", "rmse", "accuracy", "precision", "recall", "f1"]
+                key: best_trial.user_attrs.get(key) for key in list(Metric.__args__)
             }
 
             selected_features = best_trial.user_attrs.get("selected_features")

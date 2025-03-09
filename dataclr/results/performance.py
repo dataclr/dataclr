@@ -1,3 +1,6 @@
+from dataclr.metrics.metrics import Metric
+
+
 class ResultPerformance:
     """
     Represents the performance metrics of a model or result.
@@ -16,6 +19,9 @@ class ResultPerformance:
         precision (float): Precision score.
         recall (float): Recall score.
         f1 (float): F1 score.
+        average_precision (float): Average precision score.
+        matthews_corrcoef (float): Matthews corrcoef.
+        used_metric (Metrics): Metrics used during training. Defaults to None.
     """
 
     def __init__(
@@ -26,6 +32,9 @@ class ResultPerformance:
         precision: float = None,
         recall: float = None,
         f1: float = None,
+        average_precision: float = None,
+        matthews_corrcoef: float = None,
+        used_metric: Metric = None,
     ) -> None:
         self.rmse = rmse
         self.r2 = r2
@@ -33,6 +42,9 @@ class ResultPerformance:
         self.precision = precision
         self.recall = recall
         self.f1 = f1
+        self.average_precision = average_precision
+        self.matthews_corrcoef = matthews_corrcoef
+        self.used_metric = used_metric
 
     def __getitem__(self, key: str) -> float:
         attributes = {
@@ -42,6 +54,8 @@ class ResultPerformance:
             "precision": self.precision,
             "recall": self.recall,
             "f1": self.f1,
+            "average_precision": self.average_precision,
+            "matthews_corrcoef": self.matthews_corrcoef,
         }
         if key not in attributes:
             raise KeyError(f"'{key}' is not a valid performance metric.")
@@ -49,6 +63,11 @@ class ResultPerformance:
 
     def __str__(self) -> str:
         metrics = []
+        if self.used_metric is not None:
+            used_value = getattr(self, self.used_metric, None)
+            metrics.append(
+                f"Optimalization metric({self.used_metric}): {used_value:.4f}"
+            )
         if self.rmse is not None:
             metrics.append(f"RMSE: {self.rmse:.4f}")
         if self.r2 is not None:
@@ -73,6 +92,8 @@ class ResultPerformance:
             and self.precision == other.precision
             and self.recall == other.recall
             and self.f1 == other.f1
+            and self.average_precision == other.average_precision
+            and self.matthews_corrcoef == other.matthews_corrcoef
         )
 
 
@@ -101,12 +122,29 @@ class ClassificationPerformance(ResultPerformance):
         precision (float): Precision score.
         recall (float): Recall score.
         f1 (float): F1 score.
+        average_precision (float): Average precision score.
+        matthews_corrcoef (float): Matthews corrcoef.
 
     Inherits from:
         :class:`ResultPerformance`
     """
 
     def __init__(
-        self, accuracy: float, precision: float, recall: float, f1: float
+        self,
+        accuracy: float,
+        precision: float,
+        recall: float,
+        f1: float,
+        average_precision: float,
+        matthews_corrcoef: float,
+        used_metric: Metric = None,
     ) -> None:
-        super().__init__(accuracy=accuracy, precision=precision, recall=recall, f1=f1)
+        super().__init__(
+            accuracy=accuracy,
+            precision=precision,
+            recall=recall,
+            f1=f1,
+            average_precision=average_precision,
+            matthews_corrcoef=matthews_corrcoef,
+            used_metric=used_metric,
+        )
